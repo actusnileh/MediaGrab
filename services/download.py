@@ -4,7 +4,7 @@ from api.schemas.download_schema import VideoSchema
 
 
 def download_video(video_data: VideoSchema):
-    quality_value = video_data.quality.value
+    quality_value = video_data.quality.to_value()
 
     if video_data.only_audio:
         quality_str = "bestaudio/best"

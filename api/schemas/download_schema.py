@@ -2,16 +2,25 @@ from pydantic import BaseModel
 from enum import Enum
 
 
-class QualityEnum(int, Enum):
-    Q144 = 144
-    Q240 = 240
-    Q360 = 360
-    Q480 = 480
-    Q720 = 720
-    Q1080 = 1080
+class QualityEnum(str, Enum):
+    lowest = "lowest"
+    low = "low"
+    medium = "medium"
+    high = "high"
+    highest = "highest"
+
+    def to_value(self):
+        quality_map = {
+            "lowest": 144,
+            "low": 240,
+            "medium": 360,
+            "high": 720,
+            "highest": 1080,
+        }
+        return quality_map[self.value]
 
 
 class VideoSchema(BaseModel):
     url: str
-    quality: QualityEnum = QualityEnum.Q720
+    quality: QualityEnum = QualityEnum.high
     only_audio: bool = False

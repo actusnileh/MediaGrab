@@ -13,7 +13,19 @@ router = APIRouter(tags=["Download"], prefix="/video_audio")
 @router.get(
     "",
     summary="Скачать видео/аудио с YouTube и VK.",
-    description="Скачать видео/аудио с YouTube и VK. Возможность выбора качества видеоролика.",
+    description="""
+    Скачать видео/аудио с YouTube и VK с возможностью выбора качества видеоролика.
+
+    Качество видео:
+    - `lowest` - 144p
+    - `low` - 240p
+    - `medium` - 360p
+    - `high` - 720p
+    - `highest` - 1080p
+
+    Примечания:
+    - Параметр `only_audio` позволяет загрузить только аудиодорожку в формате MP3.
+    """,
 )
 async def get_video_youtube(video: VideoSchema = Depends()) -> Response:
     try:
@@ -32,13 +44,13 @@ async def get_video_youtube(video: VideoSchema = Depends()) -> Response:
             quality=video.quality,
             only_audio=video.only_audio,
         )
-    except Exception:
-        return Response(
-            message="Ошибка.",
-            url=video.url,
-            quality=video.quality,
-            only_audio=video.only_audio,
-        )
+    # except Exception:
+    #     return Response(
+    #         message="Ошибка.",
+    #         url=video.url,
+    #         quality=video.quality,
+    #         only_audio=video.only_audio,
+    #     )
     else:
         return Response(
             message="Успешно.",
