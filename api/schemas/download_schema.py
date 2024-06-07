@@ -11,7 +11,7 @@ class QualityEnum(int, Enum):
     Q1080 = 1080
 
 
-class YoutubeVideoSchema(BaseModel):
+class VideoSchema(BaseModel):
     url: str
     quality: QualityEnum = 720
     only_audio: bool = False

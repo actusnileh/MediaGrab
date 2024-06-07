@@ -1,6 +1,6 @@
 <h1 align="center" id="title">MultiGrab</h1>
 
-<p align="center"><img src="https://socialify.git.ci/actusnileh/MultiGrab/image?font=Inter&amp;language=1&amp;logo=https%3A%2F%2Fi.ibb.co%2Fzmb0Sym%2F51454cdae7db.png&amp;name=1&amp;pattern=Diagonal%20Stripes&amp;stargazers=1&amp;theme=Auto" alt="project-image"></p>
+<p align="center"><img src="https://socialify.git.ci/actusnileh/MultiGrab/image?font=Inter&language=1&logo=https%3A%2F%2Fi.ibb.co%2Fzmb0Sym%2F51454cdae7db.png&name=1&pattern=Signal&stargazers=1&theme=Auto" alt="project-image"></p>
 
 <p id="description">MultiGrab API — это универсальное решение для загрузки видеороликов и аудио с различных платформ таких как ВКонтакте и YouTube.</p>
 

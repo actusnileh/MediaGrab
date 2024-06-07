@@ -1,8 +1,8 @@
 from fastapi import Depends
 from fastapi.routing import APIRouter
 
-from api.schemas.youtube import YoutubeVideoSchema
-from services.youtube_download import download_video
+from api.schemas.download_schema import VideoSchema
+from services.download import download_video
 
 router = APIRouter(tags=["Download"], prefix="/youtube")
 
@@ -12,7 +12,7 @@ router = APIRouter(tags=["Download"], prefix="/youtube")
     summary="Скачать видео/аудио с YouTube.",
     description="Скачать видео/аудио с YouTube. Возможность выбора качества видеоролика.",
 )
-async def get_video_youtube(youtube_video: YoutubeVideoSchema = Depends()):
+async def get_video_youtube(youtube_video: VideoSchema = Depends()):
     try:
         download_video(youtube_video)
     except Exception:

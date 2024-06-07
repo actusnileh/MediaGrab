@@ -1,9 +1,9 @@
 import yt_dlp
 
-from api.schemas.youtube import YoutubeVideoSchema
+from api.schemas.download_schema import VideoSchema
 
 
-def download_video(video_data: YoutubeVideoSchema):
+def download_video(video_data: VideoSchema):
     quality_value = video_data.quality.value
 
     if video_data.only_audio:
