@@ -13,5 +13,5 @@ class QualityEnum(int, Enum):
 
 class VideoSchema(BaseModel):
     url: str
-    quality: QualityEnum = 720
+    quality: QualityEnum = QualityEnum.Q720
     only_audio: bool = False
