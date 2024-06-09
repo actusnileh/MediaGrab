@@ -1,4 +1,5 @@
 from fastapi import Depends
+from fastapi.responses import FileResponse
 from fastapi.routing import APIRouter
 
 from yt_dlp.utils import ExtractorError, DownloadError
@@ -27,9 +28,9 @@ router = APIRouter(tags=["Download"], prefix="/video_audio")
     - Параметр `only_audio` позволяет загрузить только аудиодорожку в формате MP3.
     """,
 )
-async def get_video_youtube(video: VideoSchema = Depends()) -> Response:
+async def get_video_youtube(video: VideoSchema = Depends()):
     try:
-        download_video(video)
+        file_name = download_video(video)
     except DownloadError:
         return Response(
             message="Ошибка при загрузки ролика.",
@@ -44,17 +45,12 @@ async def get_video_youtube(video: VideoSchema = Depends()) -> Response:
             quality=video.quality,
             only_audio=video.only_audio,
         )
-    # except Exception:
-    #     return Response(
-    #         message="Ошибка.",
-    #         url=video.url,
-    #         quality=video.quality,
-    #         only_audio=video.only_audio,
-    #     )
-    else:
+    except Exception:
         return Response(
-            message="Успешно.",
+            message="Ошибка.",
             url=video.url,
             quality=video.quality,
             only_audio=video.only_audio,
         )
+    else:
+        return FileResponse(file_name, media_type="video/mp4")

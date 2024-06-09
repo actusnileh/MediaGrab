@@ -9,6 +9,7 @@ services:
       - '8000:8000'
     volumes:
       - ..:/code
+      - ../videos:/app/videos
     networks:
       - backend
 

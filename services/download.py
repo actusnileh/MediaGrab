@@ -1,16 +1,17 @@
+import os
 import yt_dlp
 
 from api.schemas.download_schema import VideoSchema
 
 
-def download_video(video_data: VideoSchema):
+def download_video(video_data: VideoSchema) -> str:
     quality_value = video_data.quality.to_value()
 
     if video_data.only_audio:
         quality_str = "bestaudio/best"
         ydl_opts = {
             "format": quality_str,
-            "outtmpl": "%(title)s.%(ext)s",
+            "outtmpl": "videos/%(title)s.%(ext)s",
             "postprocessors": [
                 {
                     "key": "FFmpegExtractAudio",
@@ -24,11 +25,18 @@ def download_video(video_data: VideoSchema):
         quality_str = f"bestvideo[height<={quality_value}]+bestaudio/best[height<={quality_value}]"
         ydl_opts = {
             "format": quality_str,
-            "outtmpl": "%(title)s.%(ext)s",
+            "outtmpl": "videos/%(title)s.%(ext)s",
             "merge_output_format": "mp4",
         }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        ydl.download([video_data.url])
+        info = ydl.extract_info(video_data.url, download=True)
+        video_dir = "/app/videos"
+        file_name = (
+            f"{info['title']}.mp3".replace("?", "？")
+            if video_data.only_audio
+            else f"{info['title']}.mp4".replace("?", "？")
+        )
+        filename = os.path.join(video_dir, file_name)
 
-    return "%(title)s.mp3" if video_data.only_audio else "%(title)s.mp4"
+    return filename

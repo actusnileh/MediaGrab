@@ -8,3 +8,10 @@ class Response(BaseModel):
     url: HttpUrl
     quality: QualityEnum
     only_audio: bool
+
+
+class Information_Response(BaseModel):
+    message: str
+    preview_url: str
+    author_name: str
+    title: str

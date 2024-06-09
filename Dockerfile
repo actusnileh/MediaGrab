@@ -24,4 +24,6 @@ RUN poetry install --no-root --no-interaction --no-ansi
 
 EXPOSE 8000
 
+VOLUME /app/videos
+
 COPY . .
