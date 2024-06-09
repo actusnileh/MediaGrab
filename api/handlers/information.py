@@ -1,7 +1,7 @@
 from fastapi.routing import APIRouter
 
 from api.schemas.response_schema import Information_Response
-from services.information import get_information
+from services.information import get_information_vk, get_information_youtube
 
 
 router = APIRouter(tags=["Information"], prefix="/information")
@@ -18,9 +18,13 @@ router = APIRouter(tags=["Information"], prefix="/information")
 
     """,
 )
-async def get_video_youtube(url: str) -> Information_Response:
+async def get_video_information(url: str) -> Information_Response:
     try:
-        preview_url, author_name, titile = get_information(url)
+        if "youtube" in url:
+            preview_url, author_name, title = get_information_youtube(url)
+        elif "vk" in url:
+            preview_url, title = get_information_vk(url)
+            author_name = "ВКонтакте"
     except Exception:
         return Information_Response(
             message="EROOR",
@@ -33,5 +37,5 @@ async def get_video_youtube(url: str) -> Information_Response:
             message="OK",
             preview_url=preview_url,
             author_name=author_name,
-            title=titile,
+            title=title,
         )

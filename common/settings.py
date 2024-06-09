@@ -11,6 +11,7 @@ environ.Env.read_env(str(BASE_DIR.joinpath(".env")))
 class Settings(BaseSettings):
     debug: bool = env("DEBUG", default=False)
     title: str = env("TITLE")
+    vk_token: str = env("VK_TOKEN")
 
 
 settings = Settings()

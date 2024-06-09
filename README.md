@@ -14,16 +14,18 @@ git clone https://github.com/actusnileh/MultiGrab.git && cd MultiGrab
 
 <p>2. Установите все необходимые пакеты из раздела "Зависимости".</p>
   
-## Зависимости
+<h2> Зависимости </h2>
 
 - [Docker](https://www.docker.com/get-started)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 - [GNU Make](https://www.gnu.org/software/make/)
 
 
-### Основные команды
+<h2> Основные команды </h2>
 
 * `make app` - Запустить контейнер
 * `make build` - Забилдить контейнер
 * `make drop` - Остановить контейнер
 * `make logs` - Просмотр логов в контейнере
+
+[Frontend](https://github.com/PxrpGill/multi_grab_frontend)
