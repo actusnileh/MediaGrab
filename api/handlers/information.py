@@ -25,6 +25,8 @@ async def get_video_information(url: str) -> Information_Response:
         elif "vk" in url:
             preview_url, title = get_information_vk(url)
             author_name = "ВКонтакте"
+        else:
+            raise ValueError("Unsupported URL")
     except Exception:
         return Information_Response(
             message="EROOR",
