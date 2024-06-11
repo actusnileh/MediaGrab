@@ -52,22 +52,20 @@ async def get_video_youtube(video: VideoSchema = Depends()):
             ).dict(),
         )
     except Exception:
-        return Response(
-            message="Ошибка.",
-            url=video.url,
-            quality=video.quality,
-            only_audio=video.only_audio,
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=Response(
+                message="Ошибка.",
+                url=video.url,
+                quality=video.quality,
+                only_audio=video.only_audio,
+            ).dict(),
         )
     else:
         if "mp4" in file_name:
             response = FileResponse(file_path, media_type="video/mp4")
-            response.headers["Content-Disposition"] = (
-                f'attachment; filename="{file_name}"'
-            )
-            return response
         elif "mp3" in file_name:
             response = FileResponse(file_path, media_type="audio/mp3")
-            response.headers["Content-Disposition"] = (
-                f'attachment; filename="{file_name}"'
-            )
-            return response
+
+        response.headers["Content-Disposition"] = f'attachment; filename="{file_name}"'
+        return response

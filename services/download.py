@@ -45,6 +45,5 @@ def download_video(video_data: VideoSchema) -> str:
             sb_filepath = cut_video_segments(filepath, segments)
             if os.path.exists(filepath):
                 os.remove(filepath)
-            filepath = sb_filepath
-
+                os.rename(sb_filepath, filepath)
     return filepath, file_name

@@ -10,6 +10,7 @@ router = APIRouter(tags=["Clear Cache"], prefix="/cache")
 @router.delete(
     "",
     summary="Очистить кэш роликов",
+    description="Необходимо отправлять UUID ключ, который содержится в названии ролика перед '.mp4' или '.mp3'",
 )
 async def clear_cache(uuid: uuid.UUID):
     video_dir = "/app/videos"
