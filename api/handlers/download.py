@@ -25,6 +25,7 @@ router = APIRouter(tags=["Download"], prefix="/video_audio")
 
     Примечания:
     - Параметр `only_audio` позволяет загрузить только аудиодорожку в формате MP3.
+    - Параметр `sponsorblock` позволяет удалить из видеоролика YouTube рекламные интеграции.
     """,
 )
 async def get_video_youtube(video: VideoSchema = Depends()):

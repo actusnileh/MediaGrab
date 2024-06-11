@@ -20,7 +20,7 @@ router = APIRouter(tags=["Information"], prefix="/information")
 )
 async def get_video_information(url: str) -> Information_Response:
     try:
-        if "youtube" in url:
+        if "youtu" in url:
             preview_url, author_name, title = get_information_youtube(url)
         elif "vk" in url:
             preview_url, title = get_information_vk(url)

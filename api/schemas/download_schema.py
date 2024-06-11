@@ -24,3 +24,4 @@ class VideoSchema(BaseModel):
     url: str
     quality: QualityEnum = QualityEnum.high
     only_audio: bool = False
+    sponsor_block: bool = False

@@ -3,6 +3,7 @@ import uuid
 import yt_dlp
 
 from api.schemas.download_schema import VideoSchema
+from services.sponsorblock import cut_video_segments, get_sponsor_segments
 
 
 def download_video(video_data: VideoSchema) -> str:
@@ -39,5 +40,11 @@ def download_video(video_data: VideoSchema) -> str:
             f"{video_uuid}.mp3" if video_data.only_audio else f"{video_uuid}.mp4"
         )
         filepath = os.path.join(video_dir, file_name)
+        if video_data.sponsor_block:
+            segments = get_sponsor_segments(video_data.url)
+            sb_filepath = cut_video_segments(filepath, segments)
+            if os.path.exists(filepath):
+                os.remove(filepath)
+            filepath = sb_filepath
 
     return filepath, file_name
