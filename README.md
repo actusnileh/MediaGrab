@@ -23,9 +23,12 @@ git clone https://github.com/actusnileh/MultiGrab.git && cd MultiGrab
 
 <h2> Основные команды </h2>
 
-* `make app` - Запустить контейнер
-* `make build` - Забилдить контейнер
-* `make drop` - Остановить контейнер
-* `make logs` - Просмотр логов в контейнере
+* `make app` - Запустить контейнер.
+* `make build` - Собрать контейнеры.
+* `make storage` - Запустить контейнер.
+* `make drop-storage` - Остановить контейнер.
+* `make drop-app` - Остановить контейнер.
+* `make drop-all` - Остановить все контейнеры.
+* `make logs` - Просмотр логов в контейнере.
 
 [Frontend](https://github.com/PxrpGill/multi_grab_frontend)

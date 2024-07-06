@@ -13,6 +13,9 @@ django-environ = "^0.11.2"
 yt-dlp = "^2024.5.27"
 pytube = "^15.0.0"
 moviepy = "^1.0.3"
+sqlalchemy = "^2.0.31"
+asyncpg = "^0.29.0"
+alembic = "^1.13.2"
 
 
 [build-system]
