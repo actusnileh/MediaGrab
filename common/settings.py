@@ -19,5 +19,8 @@ class Settings(BaseSettings):
     db_port: str = env("DB_PORT")
     db_name: str = env("DB_NAME")
 
+    secret_key: str = env("SECRET_KEY")
+    algorithm: str = env("ALGORITHM")
+
 
 settings = Settings()

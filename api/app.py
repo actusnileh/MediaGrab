@@ -6,6 +6,7 @@ from common.settings import settings
 from api.handlers.download import router as download_router
 from api.handlers.information import router as information_router
 from api.handlers.cache import router as cache_router
+from api.handlers.auth import router as auth_router
 
 
 def create_app():
@@ -13,6 +14,7 @@ def create_app():
     app.include_router(download_router, prefix="/v1")
     app.include_router(information_router, prefix="/v1")
     app.include_router(cache_router, prefix="/v1")
+    app.include_router(auth_router, prefix="/v1")
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],
