@@ -12,11 +12,11 @@ from api.handlers.history import router as history_router
 
 def create_app():
     app = FastAPI(title=settings.title, debug=settings.debug)
-    app.include_router(download_router, prefix="/v1")
-    app.include_router(information_router, prefix="/v1")
-    app.include_router(cache_router, prefix="/v1")
-    app.include_router(history_router, prefix="/v1")
-    app.include_router(auth_router, prefix="/v1")
+    app.include_router(download_router)
+    app.include_router(information_router)
+    app.include_router(cache_router)
+    app.include_router(history_router)
+    app.include_router(auth_router)
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],
