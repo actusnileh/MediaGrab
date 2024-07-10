@@ -1,9 +1,14 @@
+from datetime import datetime
+from typing import Optional
 from fastapi import Depends
 from fastapi.responses import FileResponse
 from fastapi.routing import APIRouter
 
+from api.handlers.dependencies import get_current_user_optional
 from api.schemas.download_schema import VideoSchema
 from common.exceptions import DownloadErrorException
+from database.users.models import Users
+from database.videos.repository import VideoRepository
 from services.download import download_video
 
 router = APIRouter(tags=["Download"], prefix="/video_audio")
@@ -25,9 +30,16 @@ router = APIRouter(tags=["Download"], prefix="/video_audio")
     Примечания:
     - Параметр `only_audio` позволяет загрузить только аудиодорожку в формате MP3.
     - Параметр `sponsorblock` позволяет удалить из видеоролика YouTube рекламные интеграции.
+
+    - Если пользователь авторизован, то видеоролик попадёт в историю его запросов.
     """,
 )
-async def get_video_youtube(video: VideoSchema = Depends()):
+async def get_video(
+    video: VideoSchema = Depends(),
+    user: Optional[Users] = Depends(
+        get_current_user_optional,
+    ),
+):
     try:
         file_path, file_name = download_video(video)
     except Exception:
@@ -38,4 +50,10 @@ async def get_video_youtube(video: VideoSchema = Depends()):
         elif "mp3" in file_name:
             response = FileResponse(file_path, media_type="audio/mp3")
         response.headers["Content-Disposition"] = f'attachment; filename="{file_name}"'
+        if user:
+            await VideoRepository.add(
+                user=user.id,
+                url=video.url,
+                download_at=datetime.now(),
+            )
         return response

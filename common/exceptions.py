@@ -13,12 +13,12 @@ IncorrectEmailOrPasswordsException = HTTPException(
 
 TokenExpiredException = HTTPException(
     status.HTTP_401_UNAUTHORIZED,
-    detail="Токен истёк",
+    detail="Авторизация истекла",
 )
 
 TokenAbsentException = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
-    detail="Токен отсутствует",
+    detail="Авторизация отсутствует",
 )
 
 IncorrectTokenFormatExpressionException = HTTPException(

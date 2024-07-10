@@ -1,9 +1,6 @@
-from database.database import async_session_maker
+from database.repository import BaseRepository
+from database.videos.models import Videos
 
 
-class VideosRepository:
-
-    @classmethod
-    async def add_video(cls, video):
-        async with async_session_maker() as session:
-            pass
+class VideoRepository(BaseRepository):
+    model = Videos
