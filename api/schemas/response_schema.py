@@ -1,17 +1,15 @@
-from pydantic import BaseModel, HttpUrl
-
-from api.schemas.download_schema import QualityEnum
+from pydantic import BaseModel
 
 
-class Response(BaseModel):
-    message: str
-    url: HttpUrl
-    quality: QualityEnum
-    only_audio: bool
-
-
-class Information_Response(BaseModel):
+class InformationResponse(BaseModel):
     message: str
     preview_url: str
     author_name: str
     title: str
+
+
+class HistoryResponse(BaseModel):
+    id: int
+    url: str
+    preview_url: str
+    download_at: str

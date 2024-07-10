@@ -1,6 +1,6 @@
 from fastapi.routing import APIRouter
 
-from api.schemas.response_schema import Information_Response
+from api.schemas.response_schema import InformationResponse
 from services.information import get_information_vk, get_information_youtube
 
 
@@ -18,7 +18,7 @@ router = APIRouter(tags=["Information"], prefix="/information")
 
     """,
 )
-async def get_video_information(url: str) -> Information_Response:
+async def get_video_information(url: str) -> InformationResponse:
     try:
         if "youtu" in url:
             preview_url, author_name, title = get_information_youtube(url)
@@ -28,14 +28,14 @@ async def get_video_information(url: str) -> Information_Response:
         else:
             raise ValueError("Unsupported URL")
     except Exception:
-        return Information_Response(
+        return InformationResponse(
             message="EROOR",
             preview_url="ERROR",
             author_name="ERROR",
             title="ERROR",
         )
     else:
-        return Information_Response(
+        return InformationResponse(
             message="OK",
             preview_url=preview_url,
             author_name=author_name,

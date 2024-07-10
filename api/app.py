@@ -7,7 +7,7 @@ from api.handlers.download import router as download_router
 from api.handlers.information import router as information_router
 from api.handlers.cache import router as cache_router
 from api.handlers.auth import router as auth_router
-from api.handlers.history import router as history_router
+from api.handlers.authorized import router as history_router
 
 
 def create_app():
