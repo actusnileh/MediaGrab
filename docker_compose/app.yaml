@@ -4,10 +4,22 @@ services:
     build: ..
     command: uvicorn --factory api.app:create_app --reload --host 0.0.0.0 --port 8000
     ports:
-      - '8000:8000'
+      - "8000:8000"
     volumes:
       - ..:/code
       - ../videos:/app/videos
+    networks:
+      - backend
+
+  celery:
+    container_name: multigrab-celery
+    build: ..
+    command: celery -A services.tasks.celery:celery worker --loglevel=info
+    volumes:
+      - ..:/code
+      - ../videos:/app/videos
+    depends_on:
+      - redis
     networks:
       - backend
 

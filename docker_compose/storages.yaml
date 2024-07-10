@@ -13,7 +13,7 @@ services:
     ports:
       - "6443:6443"
     volumes:
-      - ./dbdata:/var/lib/postgresql/data
+      - ./dbdata:/var/lib/postgresql/data 777
     networks:
       - backend
 

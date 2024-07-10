@@ -10,6 +10,7 @@ from common.exceptions import DownloadErrorException
 from database.users.models import Users
 from database.videos.repository import VideoRepository
 from services.download import download_video
+from services.tasks.tasks import clear_video_cache
 
 router = APIRouter(tags=["Download"], prefix="/video_audio")
 
@@ -56,4 +57,5 @@ async def get_video(
                 url=video.url,
                 download_at=datetime.now(),
             )
+        clear_video_cache.apply_async(args=[file_name], countdown=300)
         return response
