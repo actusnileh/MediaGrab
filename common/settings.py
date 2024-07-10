@@ -21,6 +21,7 @@ class Settings(BaseSettings):
 
     secret_key: str = env("SECRET_KEY")
     algorithm: str = env("ALGORITHM")
+    days_to_expire: int = env("DAYS_TO_EXPIRE")
 
 
 settings = Settings()
