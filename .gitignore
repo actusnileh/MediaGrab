@@ -165,4 +165,5 @@ videos/*
 .vscode
 
 docker_compose/dbdata
+docker_compose/redisdata
 migrations/versions/*

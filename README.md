@@ -31,4 +31,4 @@ git clone https://github.com/actusnileh/MultiGrab.git && cd MultiGrab
 * `make drop-all` - Остановить все контейнеры.
 * `make logs` - Просмотр логов в контейнере.
 
-[Frontend](https://github.com/PxrpGill/multi_grab_frontend)
+[Frontend](https://github.com/PxrpGill/multigrab_frontend)

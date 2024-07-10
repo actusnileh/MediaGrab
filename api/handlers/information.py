@@ -1,4 +1,5 @@
 from fastapi.routing import APIRouter
+from fastapi_cache.decorator import cache
 
 from api.schemas.response_schema import InformationResponse
 from services.information import get_information_vk, get_information_youtube
@@ -18,6 +19,7 @@ router = APIRouter(tags=["Information"], prefix="/information")
 
     """,
 )
+@cache(expire=120)
 async def get_video_information(url: str) -> InformationResponse:
     try:
         if "youtu" in url:

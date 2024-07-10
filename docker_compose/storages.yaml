@@ -1,19 +1,36 @@
+version: '3.8'
+
 services:
   db:
     image: postgres
+    container_name: multigrab-postgres
+
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
+      PGPORT: ${DB_PORT}
     ports:
-      - "5432:5432"
+      - "6443:6443"
     volumes:
       - ./dbdata:/var/lib/postgresql/data
     networks:
       - backend
 
+  redis:
+    image: redis:latest
+    container_name: multigrab-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redisdata:/data
+    networks:
+      - backend
+    restart: unless-stopped
+
 volumes:
   dbdata:
+  redis-data:
 
 networks:
   backend:
