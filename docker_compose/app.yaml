@@ -2,9 +2,12 @@ services:
   fastapi:
     container_name: multigrab-fastapi
     build: ..
-    command: uvicorn --factory api.app:create_app --reload --host 0.0.0.0 --port 8000
+    command: /bin/sh -c "alembic upgrade head && uvicorn --factory api.app:create_app --reload --host 0.0.0.0 --port 8000"
     ports:
       - "8000:8000"
+    depends_on:
+      - redis
+      - db
     volumes:
       - ..:/code
       - ../videos:/app/videos
