@@ -164,6 +164,6 @@ poetry.lock
 videos/*
 .vscode
 
-docker_compose/dbdata
-docker_compose/redisdata
+docker_compose/db_data
+docker_compose/redis_data
 migrations/versions/*

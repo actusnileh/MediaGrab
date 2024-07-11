@@ -42,7 +42,7 @@ async def get_video(
     ),
 ):
     try:
-        file_path, file_name = download_video(video)
+        file_path, file_name = await download_video(video)
     except Exception:
         raise DownloadErrorException
     else:

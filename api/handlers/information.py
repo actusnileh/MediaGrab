@@ -5,7 +5,7 @@ from api.schemas.response_schema import InformationResponse
 from common.exceptions import UrlFormatException
 from services.information import get_information_vk, get_information_youtube
 from services.sponsorblock import get_sponsor_segments
-
+from pytube.exceptions import VideoUnavailable
 
 router = APIRouter(tags=["Information"], prefix="/information")
 
@@ -21,7 +21,7 @@ router = APIRouter(tags=["Information"], prefix="/information")
 
     """,
 )
-@cache(expire=120)
+@cache(expire=60)
 async def get_video_information(url: str) -> InformationResponse:
     try:
         if "youtu" in url:
@@ -31,16 +31,20 @@ async def get_video_information(url: str) -> InformationResponse:
             author_name = "ВКонтакте"
         else:
             raise UrlFormatException
-    except Exception:
+    except VideoUnavailable:
         return InformationResponse(
-            message="EROOR",
-            preview_url="ERROR",
-            author_name="ERROR",
-            title="ERROR",
+            preview_url="Ролик недоступен",
+            author_name="Ролик недоступен",
+            title="Ролик недоступен",
+        )
+    except KeyError:
+        return InformationResponse(
+            preview_url="Ошибка получения информации",
+            author_name="Ошибка получения информации",
+            title="Ошибка получения информации",
         )
     else:
         return InformationResponse(
-            message="OK",
             preview_url=preview_url,
             author_name=author_name,
             title=title,

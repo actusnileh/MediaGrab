@@ -1,4 +1,5 @@
 import pathlib
+from typing import Literal
 import environ
 
 from pydantic_settings import BaseSettings
@@ -9,6 +10,8 @@ environ.Env.read_env(str(BASE_DIR.joinpath(".env")))
 
 
 class Settings(BaseSettings):
+    mode: Literal["DEV", "TEST", "PROD"] = env("MODE")
+
     debug: bool = env("DEBUG", default=False)
     title: str = env("TITLE")
     vk_token: str = env("VK_TOKEN")
@@ -18,6 +21,12 @@ class Settings(BaseSettings):
     db_host: str = env("DB_HOST")
     db_port: str = env("DB_PORT")
     db_name: str = env("DB_NAME")
+
+    test_db_username: str = env("TEST_DB_USER")
+    test_db_password: str = env("TEST_DB_PASSWORD")
+    test_db_host: str = env("TEST_DB_HOST")
+    test_db_port: str = env("TEST_DB_PORT")
+    test_db_name: str = env("TEST_DB_NAME")
 
     redis_host: str = env("REDIS_HOST")
     redis_port: str = env("REDIS_PORT")

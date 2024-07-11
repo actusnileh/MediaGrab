@@ -19,7 +19,7 @@ def get_sponsor_segments(url) -> list[list[float]]:
     return []
 
 
-def cut_video_segments(video_path, segments_to_cut):
+async def cut_video_segments(video_path, segments_to_cut):
     video = mpy.VideoFileClip(video_path)
     clips = []
     previous_end = 0

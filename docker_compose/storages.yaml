@@ -11,7 +11,7 @@ services:
     ports:
       - "6443:6443"
     volumes:
-      - ./dbdata:/var/lib/postgresql/data 777
+      - ./db_data:/var/lib/postgresql/data
     networks:
       - backend
 
@@ -21,14 +21,14 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - ./redisdata:/data
+      - ./redis_data:/data
     networks:
       - backend
     restart: unless-stopped
 
 volumes:
-  dbdata:
-  redis-data:
+  db_data:
+  redis_data:
 
 networks:
   backend:
