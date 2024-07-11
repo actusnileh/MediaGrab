@@ -2,7 +2,9 @@ from fastapi.routing import APIRouter
 from fastapi_cache.decorator import cache
 
 from api.schemas.response_schema import InformationResponse
+from common.exceptions import UrlFormatException
 from services.information import get_information_vk, get_information_youtube
+from services.sponsorblock import get_sponsor_segments
 
 
 router = APIRouter(tags=["Information"], prefix="/information")
@@ -28,7 +30,7 @@ async def get_video_information(url: str) -> InformationResponse:
             preview_url, title = get_information_vk(url)
             author_name = "ВКонтакте"
         else:
-            raise ValueError("Unsupported URL")
+            raise UrlFormatException
     except Exception:
         return InformationResponse(
             message="EROOR",
@@ -43,3 +45,17 @@ async def get_video_information(url: str) -> InformationResponse:
             author_name=author_name,
             title=title,
         )
+
+
+@router.get(
+    "_segments",
+    summary="Получить информацию о рекламных интеграциях в ролике",
+    description="Возвращает список промежутков в секундах, где находятся рекламные интеграции\n(Только для YouTube)",
+)
+@cache(expire=120)
+async def get_video_sponsorblock(url: str) -> list[list[float]]:
+    if "youtu" in url:
+        sponsorblock_segments = get_sponsor_segments(url)
+    else:
+        raise UrlFormatException
+    return sponsorblock_segments
