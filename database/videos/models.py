@@ -1,4 +1,6 @@
 from sqlalchemy import Column, Date, ForeignKey, Integer, String
+from sqlalchemy.orm import relationship
+
 from database.database import Base
 
 
@@ -9,3 +11,8 @@ class Videos(Base):
     user = Column(Integer, ForeignKey("users.id"), nullable=False)
     url = Column(String, nullable=False)
     download_at = Column(Date, nullable=False)
+
+    users = relationship("Users", back_populates="videos")
+
+    def __str__(self):
+        return f"Видео #{self.id}"

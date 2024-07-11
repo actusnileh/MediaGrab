@@ -33,3 +33,14 @@ async def authenticate_user(email: EmailStr, password: str):
     if not user or not verify_password(password, user.hashed_password):
         return None
     return user
+
+
+async def authenticate_admin(email: EmailStr, password: str):
+    user = await UserRepository.find_one_or_none(email=email)
+    if (
+        not user
+        or not verify_password(password, user.hashed_password)
+        or user.is_admin is not True
+    ):
+        return None
+    return user

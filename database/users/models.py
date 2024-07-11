@@ -1,4 +1,6 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Boolean, Column, Integer, String
+from sqlalchemy.orm import relationship
+
 from database.database import Base
 
 
@@ -8,4 +10,10 @@ class Users(Base):
     id = Column(Integer, primary_key=True)
     username = Column(String, nullable=False)
     email = Column(String, nullable=False)
+    is_admin = Column(Boolean, default=False)
     hashed_password = Column(String, nullable=False)
+
+    videos = relationship("Videos", back_populates="users")
+
+    def __str__(self):
+        return f"Пользователь #{self.username}"
