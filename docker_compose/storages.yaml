@@ -26,30 +26,9 @@ services:
       - backend
     restart: unless-stopped
 
-  prometheus:
-    image: prom/prometheus
-    container_name: prometheus
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-      - ./prometheus_data:/prometheus
-    restart: unless-stopped
-    ports:
-      - "9090:9090"
-
-  grafana:
-    image: grafana/grafana
-    container_name: grafana
-    volumes:
-      - ./grafana_data:/var/lib/grafana
-    restart: unless-stopped
-    ports:
-      - 3000:3000
-
 volumes:
   db_data:
   redis_data:
-  grafana_data:
-  prometheus_data:
 
 networks:
   backend:

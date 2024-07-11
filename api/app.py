@@ -6,7 +6,6 @@ from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from sqladmin import Admin
 import sentry_sdk
-from prometheus_fastapi_instrumentator import Instrumentator
 
 from redis import asyncio as aioredis
 
@@ -53,13 +52,6 @@ def create_app():
             "Authorization",
         ],
     )
-
-    instrumentator = Instrumentator(
-        should_group_status_codes=False,
-        excluded_handlers=[".*admin.*", "/metrics"],
-    )
-
-    instrumentator.instrument(app).expose(app)
 
     admin = Admin(app, engine, authentication_backend=authentication_backend)
     admin.add_view(UserAdmin)
