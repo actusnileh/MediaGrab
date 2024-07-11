@@ -11,6 +11,7 @@ environ.Env.read_env(str(BASE_DIR.joinpath(".env")))
 
 class Settings(BaseSettings):
     mode: Literal["DEV", "TEST", "PROD"] = env("MODE")
+    sentry_key: str = env("SENTRY_KEY")
 
     debug: bool = env("DEBUG", default=False)
     title: str = env("TITLE")

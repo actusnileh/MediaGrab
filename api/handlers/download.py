@@ -4,6 +4,7 @@ from typing import Optional
 from fastapi import Depends
 from fastapi.responses import FileResponse
 from fastapi.routing import APIRouter
+from yt_dlp.utils import YoutubeDLError
 
 from api.handlers.dependencies import get_current_user_optional
 from api.schemas.download_schema import VideoSchema
@@ -44,7 +45,7 @@ async def get_video(
 ):
     try:
         file_path, file_name = await download_video(video)
-    except Exception:
+    except (YoutubeDLError, Exception):
         raise DownloadErrorException
     else:
         if "mp4" in file_name:

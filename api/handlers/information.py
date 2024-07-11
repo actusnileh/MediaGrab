@@ -37,7 +37,7 @@ async def get_video_information(url: str) -> InformationResponse:
             author_name="Ролик недоступен",
             title="Ролик недоступен",
         )
-    except KeyError:
+    except (KeyError, Exception):
         return InformationResponse(
             preview_url="Ошибка получения информации",
             author_name="Ошибка получения информации",
