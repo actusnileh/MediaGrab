@@ -1,5 +1,6 @@
-from pytube import YouTube
 import requests
+from pytube import YouTube
+
 from common.settings import settings
 
 
@@ -20,7 +21,7 @@ def get_information_vk(url):
 
     if "response" in data and "items" in data["response"]:
         video_info = data["response"]["items"][0]
-        preview_url = video_info["image"][-1]['url']
+        preview_url = video_info["image"][-1]["url"]
         title = video_info["title"]
         return preview_url, title
     else:

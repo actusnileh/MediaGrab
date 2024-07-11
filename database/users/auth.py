@@ -1,9 +1,10 @@
 from datetime import datetime, timedelta
+
 from jose import jwt
 from passlib.context import CryptContext
 from pydantic import EmailStr
-from common.settings import settings
 
+from common.settings import settings
 from database.users.repository import UserRepository
 
 pwd_context = CryptContext(

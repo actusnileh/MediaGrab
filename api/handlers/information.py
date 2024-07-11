@@ -1,11 +1,11 @@
 from fastapi.routing import APIRouter
 from fastapi_cache.decorator import cache
+from pytube.exceptions import VideoUnavailable
 
 from api.schemas.response_schema import InformationResponse
 from common.exceptions import UrlFormatException
 from services.information import get_information_vk, get_information_youtube
 from services.sponsorblock import get_sponsor_segments
-from pytube.exceptions import VideoUnavailable
 
 router = APIRouter(tags=["Information"], prefix="/information")
 

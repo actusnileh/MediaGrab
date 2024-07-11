@@ -1,7 +1,9 @@
 from datetime import datetime
 from typing import Optional
+
 from fastapi import Depends, Request
-from jose import jwt, JWTError
+from jose import JWTError, jwt
+
 from common.exceptions import (
     IncorrectTokenFormatExpressionException,
     TokenAbsentException,

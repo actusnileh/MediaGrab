@@ -1,5 +1,5 @@
-import requests
 import moviepy.editor as mpy
+import requests
 
 
 def get_sponsor_segments(url) -> list[list[float]]:

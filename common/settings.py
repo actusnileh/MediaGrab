@@ -1,7 +1,7 @@
 import pathlib
 from typing import Literal
-import environ
 
+import environ
 from pydantic_settings import BaseSettings
 
 BASE_DIR = pathlib.Path(__file__).parent.parent

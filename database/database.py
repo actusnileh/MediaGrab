@@ -1,6 +1,6 @@
 from sqlalchemy import NullPool
-from sqlalchemy.orm import DeclarativeBase, sessionmaker
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
 from common.settings import settings
 

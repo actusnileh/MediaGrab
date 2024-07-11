@@ -1,13 +1,15 @@
 from typing import List
+
 from fastapi import Depends
 from fastapi.routing import APIRouter
+from fastapi_cache.decorator import cache
+
 from api.handlers.dependencies import get_current_user
 from api.schemas.auth import UserResponse
 from api.schemas.response_schema import HistoryResponse
 from database.users.models import Users
 from database.videos.repository import VideoRepository
 from services.information import get_information_vk, get_information_youtube
-from fastapi_cache.decorator import cache
 
 router = APIRouter(tags=["Authorized Section"], prefix="/authorized")
 

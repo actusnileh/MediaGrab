@@ -1,5 +1,7 @@
 from fastapi import Response
 from fastapi.routing import APIRouter
+
+from api.schemas.auth import UserAuth, UserRegister
 from common.exceptions import (
     IncorrectEmailOrPasswordsException,
     UserAlreadyExistsException,
@@ -9,7 +11,6 @@ from database.users.auth import (
     create_access_token,
     get_password_hash,
 )
-from api.schemas.auth import UserAuth, UserRegister
 from database.users.repository import UserRepository
 
 router = APIRouter(tags=["Authentication"], prefix="/auth")
