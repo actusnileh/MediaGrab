@@ -165,5 +165,9 @@ videos/*
 .vscode
 
 docker_compose/db_data
+docker_compose/grafana_data
+docker_compose/prometheus_data
+docker_compose/prometheus.yml
+docker_compose/db_data
 docker_compose/redis_data
 migrations/versions/*
