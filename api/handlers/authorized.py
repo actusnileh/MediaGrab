@@ -7,6 +7,7 @@ from fastapi_cache.decorator import cache
 from api.handlers.dependencies import get_current_user
 from api.schemas.auth import UserResponse
 from api.schemas.response_schema import HistoryResponse
+from common.exceptions import VideoNotFoundException
 from database.users.models import Users
 from database.videos.repository import VideoRepository
 from services.information import get_information_vk, get_information_youtube
@@ -49,8 +50,14 @@ async def get_history(
     summary="Удаление записи из истории",
     description="Позволяет аутентифицированным пользователям удалить ролик из истории запросов",
 )
-async def remove_history(current_user: Users = Depends(get_current_user)):
-    pass
+async def remove_history(
+    video_id: int, current_user: Users = Depends(get_current_user)
+):
+    result = await VideoRepository.remove_by_filter(id=video_id, user=current_user.id)
+    if result == 0:
+        raise VideoNotFoundException
+    else:
+        return {"status": "Запись в истории запросов успешно удалена"}
 
 
 @router.get(

@@ -1,9 +1,11 @@
+from typing import Dict
 from fastapi import Response
 from fastapi.routing import APIRouter
 
 from api.schemas.auth import UserAuth, UserRegister
 from common.exceptions import (
     IncorrectEmailOrPasswordsException,
+    UnknownException,
     UserAlreadyExistsException,
 )
 from database.users.auth import (
@@ -21,16 +23,20 @@ router = APIRouter(tags=["Authentication"], prefix="/auth")
     summary="Регистрация нового пользователя",
     description="Создает новую учетную запись пользователя. Требуется указать имя пользователя (никнейм), электронную почту и пароль.",
 )
-async def register_user(user_data: UserRegister):
+async def register_user(user_data: UserRegister) -> Dict:
     existing_user = await UserRepository.find_one_or_none(email=user_data.email)
     if existing_user:
         raise UserAlreadyExistsException
     hashed_password = get_password_hash(user_data.password)
-    await UserRepository.add(
-        username=user_data.username,
-        email=user_data.email,
-        hashed_password=hashed_password,
-    )
+    try:
+        await UserRepository.add(
+            username=user_data.username,
+            email=user_data.email,
+            hashed_password=hashed_password,
+        )
+    except Exception:
+        raise UnknownException
+    return {"detail": "Успешно"}
 
 
 @router.post(
@@ -52,5 +58,6 @@ async def login_user(response: Response, user_data: UserAuth):
     summary="Выход из системы",
     description="Выходит из текущей учетной записи пользователя, удаляя токен авторизации.",
 )
-async def logout_user(response: Response):
+async def logout_user(response: Response) -> Dict:
     response.delete_cookie("multigrab_user_token")
+    return {"detail": "Успешно"}

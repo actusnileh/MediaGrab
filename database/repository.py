@@ -1,4 +1,4 @@
-from sqlalchemy import insert, select
+from sqlalchemy import and_, delete, insert, select
 
 from database.database import async_session_maker
 
@@ -33,3 +33,21 @@ class BaseRepository:
             query = insert(cls.model).values(**data)
             await session.execute(query)
             await session.commit()
+
+    @classmethod
+    async def remove_by_id(cls, model_id: int):
+        async with async_session_maker() as session:
+            query = delete(cls.model).where(cls.model.id == model_id)
+            await session.execute(query)
+            await session.commit()
+
+    @classmethod
+    async def remove_by_filter(cls, **filter_by):
+        async with async_session_maker() as session:
+            async with session.begin():
+                conditions = [
+                    getattr(cls.model, key) == value for key, value in filter_by.items()
+                ]
+                query = delete(cls.model).where(and_(*conditions))
+                result = await session.execute(query)
+                return result.rowcount if result else 0

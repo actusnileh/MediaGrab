@@ -33,3 +33,9 @@ DownloadErrorException = HTTPException(
 UrlFormatException = HTTPException(
     status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid url"
 )
+
+UnknownException = HTTPException(
+    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Неизвестная ошибка"
+)
+
+VideoNotFoundException = HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Видео с таким ID не найдено")
