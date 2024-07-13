@@ -19,7 +19,7 @@ async def download_video(video_data: VideoSchema) -> str:
                 "outtmpl": f"videos/{video_uuid}.%(ext)s",
                 "postprocessors": [
                     {
-                        "key": "FFmpegExtrasdasdactAudio",
+                        "key": "FFmpegExtractAudio",
                         "preferredcodec": "mp3",
                         "preferredquality": "192",
                     }
