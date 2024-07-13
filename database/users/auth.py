@@ -4,6 +4,10 @@ from jose import jwt
 from passlib.context import CryptContext
 from pydantic import EmailStr
 
+from common.exceptions import (
+    IncorrectTokenFormatExpressionException,
+    TokenAbsentException,
+)
 from common.settings import settings
 from database.users.repository import UserRepository
 
@@ -21,12 +25,21 @@ def verify_password(password: str, hashed_password: str) -> bool:
     return pwd_context.verify(password, hashed_password)
 
 
-def create_access_token(data: dict) -> str:
+def create_refresh_token(data: dict) -> str:
     to_encode = data.copy()
-    expire = datetime.now() + timedelta(days=settings.days_to_expire)
+    expire = datetime.now() + timedelta(days=settings.refresh_token_expire)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, settings.secret_key, settings.algorithm)
     return encoded_jwt
+
+
+def create_access_token(data: dict) -> dict:
+    to_encode = data.copy()
+    expire = datetime.now() + timedelta(minutes=settings.user_token_expire)
+    to_encode.update({"exp": expire})
+    access_token = jwt.encode(to_encode, settings.secret_key, settings.algorithm)
+    refresh_token = create_refresh_token(data)
+    return access_token, refresh_token
 
 
 async def authenticate_user(email: EmailStr, password: str):
@@ -45,3 +58,25 @@ async def authenticate_admin(email: EmailStr, password: str):
     ):
         return None
     return user
+
+
+async def refresh_access_token(refresh_token: str) -> str:
+    decoded_token = jwt.decode(
+        refresh_token, settings.secret_key, algorithms=[settings.algorithm]
+    )
+    user_id = decoded_token.get("sub")
+    if not user_id:
+        raise IncorrectTokenFormatExpressionException
+
+    user = await UserRepository.find_by_id(int(user_id))
+    if not user:
+        raise TokenAbsentException
+
+    access_token_data = {"sub": str(user.id)}
+    expire = datetime.now() + timedelta(minutes=1)
+    access_token_data.update({"exp": expire})
+    new_access_token = jwt.encode(
+        access_token_data, settings.secret_key, settings.algorithm
+    )
+
+    return new_access_token

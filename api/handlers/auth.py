@@ -48,9 +48,14 @@ async def login_user(response: Response, user_data: UserAuth):
     user = await authenticate_user(user_data.email, user_data.password)
     if not user:
         raise IncorrectEmailOrPasswordsException
-    access_token = create_access_token({"sub": str(user.id)})
+    access_token, refresh_token = create_access_token({"sub": str(user.id)})
     response.set_cookie("multigrab_user_token", access_token, httponly=True)
-    return {"user_id": user.id, "access_token": access_token}
+    response.set_cookie("multigrab_refresh_token", refresh_token, httponly=True)
+    return {
+        "user_id": user.id,
+        "access_token": access_token,
+        "refresh_token": refresh_token,
+    }
 
 
 @router.post(
@@ -60,4 +65,5 @@ async def login_user(response: Response, user_data: UserAuth):
 )
 async def logout_user(response: Response) -> Dict:
     response.delete_cookie("multigrab_user_token")
+    response.delete_cookie("multigrab_refresh_token")
     return {"detail": "Успешно"}

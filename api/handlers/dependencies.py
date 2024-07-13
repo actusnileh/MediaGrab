@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 
-from fastapi import Depends, Request
+from fastapi import Depends, Request, Response
 from jose import JWTError, jwt
 
 from common.exceptions import (
@@ -10,27 +10,38 @@ from common.exceptions import (
     TokenExpiredException,
 )
 from common.settings import settings
+from database.users.auth import refresh_access_token
 from database.users.repository import UserRepository
 
 
-def get_token(request: Request):
-    token = request.cookies.get("multigrab_user_token")
-    if not token:
+def get_tokens(request: Request):
+    user_token = request.cookies.get("multigrab_user_token")
+    refresh_token = request.cookies.get("multigrab_refresh_token")
+    if not user_token:
         return None
-    return token
+    return user_token, refresh_token
 
 
-async def get_current_user(token: str = Depends(get_token)):
-    if not token:
+async def get_current_user(
+    response: Response,
+    tokens: tuple = Depends(get_tokens),
+):
+    if tokens is None:
         raise TokenAbsentException
+    user_token, refresh_token = tokens
     try:
-        payload = jwt.decode(token, settings.secret_key, settings.algorithm)
+        payload = jwt.decode(user_token, settings.secret_key, settings.algorithm)
     except JWTError:
-        raise IncorrectTokenFormatExpressionException
-    expire: str = payload.get("exp")
+        try:
+            new_access_token = await refresh_access_token(refresh_token)
+            response.set_cookie("multigrab_user_token", new_access_token, httponly=True)
+            return await get_current_user(response, (new_access_token, refresh_token))
+        except JWTError:
+            raise TokenExpiredException
+    expire = payload.get("exp")
     if (not expire) or (int(expire) < datetime.now().timestamp()):
         raise TokenExpiredException
-    user_id: str = payload.get("sub")
+    user_id = payload.get("sub")
     if not user_id:
         raise IncorrectTokenFormatExpressionException
     user = await UserRepository.find_by_id(int(user_id))
@@ -39,13 +50,22 @@ async def get_current_user(token: str = Depends(get_token)):
     return user
 
 
-async def get_current_user_optional(token: Optional[str] = Depends(get_token)):
-    if not token:
+async def get_current_user_optional(
+    response: Response,
+    tokens: Optional[tuple] = Depends(get_tokens),
+):
+    if tokens is None:
         return None
+    user_token, refresh_token = tokens
     try:
-        payload = jwt.decode(token, settings.secret_key, settings.algorithm)
+        payload = jwt.decode(user_token, settings.secret_key, settings.algorithm)
     except JWTError:
-        raise IncorrectTokenFormatExpressionException
+        try:
+            new_access_token = await refresh_access_token(refresh_token)
+            response.set_cookie("multigrab_user_token", new_access_token, httponly=True)
+            return await get_current_user(response, (new_access_token, refresh_token))
+        except JWTError:
+            raise TokenExpiredException
     expire = payload.get("exp")
     if (not expire) or (int(expire) < datetime.now().timestamp()):
         raise TokenExpiredException
