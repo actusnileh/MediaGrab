@@ -23,7 +23,7 @@ def get_tokens(request: Request):
 
 
 async def get_current_user(
-    response: Response,
+    response: Response = None,
     tokens: tuple = Depends(get_tokens),
 ):
     if tokens is None:
@@ -34,7 +34,10 @@ async def get_current_user(
     except JWTError:
         try:
             new_access_token = await refresh_access_token(refresh_token)
-            response.set_cookie("multigrab_user_token", new_access_token, httponly=True)
+            if response:
+                response.set_cookie(
+                    "multigrab_user_token", new_access_token, httponly=True
+                )
             return await get_current_user(response, (new_access_token, refresh_token))
         except JWTError:
             raise TokenExpiredException

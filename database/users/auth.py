@@ -73,7 +73,7 @@ async def refresh_access_token(refresh_token: str) -> str:
         raise TokenAbsentException
 
     access_token_data = {"sub": str(user.id)}
-    expire = datetime.now() + timedelta(minutes=1)
+    expire = datetime.now() + timedelta(minutes=settings.user_token_expire)
     access_token_data.update({"exp": expire})
     new_access_token = jwt.encode(
         access_token_data, settings.secret_key, settings.algorithm

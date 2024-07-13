@@ -24,12 +24,9 @@ class AdminAuth(AuthenticationBackend):
 
     async def authenticate(self, request: Request) -> bool:
         token = request.session.get("token")
-
         if not token:
             return False
-
-        user = await get_current_user(token)
-
+        user = await get_current_user(None, token)
         if not user:
             return False
         return True
