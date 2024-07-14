@@ -12,7 +12,6 @@ pydantic-settings = "^2.3.1"
 django-environ = "^0.11.2"
 yt-dlp = "^2024.5.27"
 pytube = "^15.0.0"
-moviepy = "^1.0.3"
 sqlalchemy = "^2.0.31"
 asyncpg = "^0.29.0"
 alembic = "^1.13.2"
@@ -27,6 +26,7 @@ pytest-asyncio = "^0.23.7"
 httpx = "^0.27.0"
 isort = "^5.13.2"
 sentry-sdk = {extras = ["fastapi"], version = "^2.9.0"}
+aiofiles = "^24.1.0"
 
 
 [build-system]

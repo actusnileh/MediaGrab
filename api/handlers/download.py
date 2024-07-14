@@ -1,8 +1,9 @@
 from datetime import datetime
 from typing import Optional
 
+import aiofiles
 from fastapi import Depends
-from fastapi.responses import FileResponse
+from fastapi.responses import StreamingResponse
 from fastapi.routing import APIRouter
 from yt_dlp.utils import YoutubeDLError
 
@@ -15,6 +16,12 @@ from services.download import download_video
 from services.tasks.tasks import clear_video_cache
 
 router = APIRouter(tags=["Download"], prefix="/video_audio")
+
+
+async def iterfile(file_path):
+    async with aiofiles.open(file_path, mode="rb") as f:
+        while chunk := await f.read(1024):
+            yield chunk
 
 
 @router.get(
@@ -48,7 +55,9 @@ async def get_video(
     except (YoutubeDLError, Exception):
         raise DownloadErrorException
     else:
-        response = FileResponse(file_path)
+        response = StreamingResponse(
+            iterfile(file_path), media_type="application/octet-stream"
+        )
         response.headers["Content-Disposition"] = f'attachment; filename="{file_name}"'
         if user:
             await VideoRepository.add(
