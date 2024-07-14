@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import Depends
+from fastapi import Depends, Query
 from fastapi.routing import APIRouter
 from fastapi_cache.decorator import cache
 
@@ -23,9 +23,15 @@ router = APIRouter(tags=["Authorized Section"], prefix="/authorized")
 )
 @cache(expire=10)
 async def get_history(
+    page: int = Query(1, description="Номер страницы"),
+    page_size: int = Query(6, description="Размер страницы"),
     current_user: Users = Depends(get_current_user),
 ) -> List[HistoryResponse]:
-    video_history_list = await VideoRepository.find_by_filter(user=current_user.id)
+    video_history_list = await VideoRepository.find_by_filter_with_pagination(
+        user=current_user.id,
+        offset=(page - 1) * page_size,
+        limit=page_size,
+    )
     history_responses = []
 
     for video_history in video_history_list:
