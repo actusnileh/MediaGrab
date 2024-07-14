@@ -54,10 +54,10 @@ async def get_video_information(url: str) -> InformationResponse:
 @router.get(
     "_segments",
     summary="Получить информацию о рекламных интеграциях в ролике",
-    description="Возвращает список промежутков в секундах, где находятся рекламные интеграции\n(Только для YouTube)",
+    description="Возвращает информацию о промежутках где находятся рекламные интеграции\n(Только для YouTube)",
 )
 @cache(expire=120)
-async def get_video_sponsorblock(url: str) -> list[list[float]]:
+async def get_video_sponsorblock(url: str) -> str:
     if "youtu" in url:
         sponsorblock_segments = get_sponsor_segments(url)
     else:
