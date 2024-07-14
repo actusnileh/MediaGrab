@@ -48,10 +48,7 @@ async def get_video(
     except (YoutubeDLError, Exception):
         raise DownloadErrorException
     else:
-        if "mp4" in file_name:
-            response = FileResponse(file_path, media_type="video/mp4")
-        elif "mp3" in file_name:
-            response = FileResponse(file_path, media_type="audio/mp3")
+        response = FileResponse(file_path)
         response.headers["Content-Disposition"] = f'attachment; filename="{file_name}"'
         if user:
             await VideoRepository.add(

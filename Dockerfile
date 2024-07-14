@@ -7,12 +7,15 @@ WORKDIR /code
 
 RUN apt-get update && apt-get install -y \
     python3 \
+    python3-pip \
     wget \
-    gnupg2
+    gnupg2 \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN wget -O /tmp/ffmpeg.deb https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz \
-    && tar -xJf /tmp/ffmpeg.deb -C /tmp \
+RUN wget -O /tmp/ffmpeg-release-amd64-static.tar.xz https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz \
+    && tar -xJf /tmp/ffmpeg-release-amd64-static.tar.xz -C /tmp \
     && cp /tmp/ffmpeg-*/ffmpeg /usr/local/bin/ \
+    && cp /tmp/ffmpeg-*/ffprobe /usr/local/bin/ \
     && rm -rf /tmp/ffmpeg-*
 
 RUN pip install --upgrade pip
