@@ -5,6 +5,7 @@ class InformationResponse(BaseModel):
     preview_url: str
     author_name: str
     title: str
+    sponsor_segments: list
 
 
 class HistoryResponse(BaseModel):

@@ -26,9 +26,11 @@ async def get_video_information(url: str) -> InformationResponse:
     try:
         if "youtu" in url:
             preview_url, author_name, title = get_information_youtube(url)
+            sponsorblock_segments: list = get_sponsor_segments(url)
         elif "vk" in url:
             preview_url, title = get_information_vk(url)
             author_name = "ВКонтакте"
+            sponsorblock_segments = []
         else:
             raise UrlFormatException
     except VideoUnavailable:
@@ -36,30 +38,19 @@ async def get_video_information(url: str) -> InformationResponse:
             preview_url="Ролик недоступен",
             author_name="Ролик недоступен",
             title="Ролик недоступен",
+            sponsor_segments=[],
         )
     except (KeyError, Exception):
         return InformationResponse(
             preview_url="Ошибка получения информации",
             author_name="Ошибка получения информации",
             title="Ошибка получения информации",
+            sponsor_segments=[],
         )
     else:
         return InformationResponse(
             preview_url=preview_url,
             author_name=author_name,
             title=title,
+            sponsor_segments=sponsorblock_segments,
         )
-
-
-@router.get(
-    "_segments",
-    summary="Получить информацию о рекламных интеграциях в ролике",
-    description="Возвращает информацию о промежутках где находятся рекламные интеграции\n(Только для YouTube)",
-)
-@cache(expire=120)
-async def get_video_sponsorblock(url: str) -> str:
-    if "youtu" in url:
-        sponsorblock_segments = get_sponsor_segments(url)
-    else:
-        raise UrlFormatException
-    return sponsorblock_segments

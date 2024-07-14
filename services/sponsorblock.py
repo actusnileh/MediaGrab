@@ -2,7 +2,7 @@ import requests
 from time import strftime, gmtime
 
 
-def get_sponsor_segments(url) -> str:
+def get_sponsor_segments(url) -> list[str]:
     video_id = url.split("=")[-1]
 
     response = requests.get(
@@ -18,16 +18,7 @@ def get_sponsor_segments(url) -> str:
                 start_time = segment["segment"][0]
                 end_time = segment["segment"][1]
                 formatted_segment = [
-                    strftime("%H:%M:%S", gmtime(start_time)),
-                    strftime("%H:%M:%S", gmtime(end_time)),
+                    f"{strftime('%H:%M:%S', gmtime(start_time))} - {strftime('%H:%M:%S', gmtime(end_time))}"
                 ]
                 sponsor_segments.append(formatted_segment)
-    if sponsor_segments:
-        text = "Найдены рекламные интеграции на промежутках:\n"
-        text += "\n".join(" - ".join(segment) for segment in sponsor_segments)
-    else:
-        text = "Рекламные интеграции не найдены"
-    return text
-
-
-print(get_sponsor_segments("https://www.youtube.com/watch?v=SAFEqxF9A0U"))
+    return sponsor_segments
