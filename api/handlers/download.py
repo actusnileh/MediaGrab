@@ -5,11 +5,11 @@ import aiofiles
 from fastapi import Depends
 from fastapi.responses import StreamingResponse
 from fastapi.routing import APIRouter
-from yt_dlp.utils import YoutubeDLError
+from yt_dlp.utils import YoutubeDLError, ExtractorError
 
 from api.handlers.dependencies import get_current_user_optional
 from api.schemas.download_schema import VideoSchema
-from common.exceptions import DownloadErrorException
+from common.exceptions import DownloadErrorException, UrlFormatException
 from database.users.models import Users
 from database.videos.repository import VideoRepository
 from services.download import download_video
@@ -52,6 +52,8 @@ async def get_video(
 ):
     try:
         file_path, file_name = await download_video(video)
+    except ExtractorError:
+        raise UrlFormatException
     except (YoutubeDLError, Exception):
         raise DownloadErrorException
     else:
