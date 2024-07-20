@@ -1,4 +1,5 @@
 from datetime import datetime
+import os
 from typing import Optional
 
 import aiofiles
@@ -61,8 +62,10 @@ async def get_video(
             media_type = "audio/m4a"
         else:
             media_type = "video/webm"
+        file_size = os.path.getsize(file_path)
         response = StreamingResponse(iterfile(file_path), media_type=media_type)
         response.headers["Content-Disposition"] = f'attachment; filename="{file_name}"'
+        response.headers["Content-Length"] = str(file_size)
         if user:
             await VideoRepository.add(
                 user=user.id,
