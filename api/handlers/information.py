@@ -1,3 +1,4 @@
+import re
 from fastapi.routing import APIRouter
 from fastapi_cache.decorator import cache
 from pytube.exceptions import VideoUnavailable
@@ -23,11 +24,15 @@ router = APIRouter(tags=["Information"], prefix="/information")
 )
 @cache(expire=60)
 async def get_video_information(url: str) -> InformationResponse:
+    youtube_regex = re.compile(
+        r"^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})$"
+    )
+    vk_video_regex = re.compile(r"^(?:https?:\/\/)?(?:www\.)?vk\.com\/video-\d+_\d+$")
     try:
-        if "youtu" in url:
+        if youtube_regex.match(url):
             preview_url, author_name, title = get_information_youtube(url)
             sponsorblock_segments: list = get_sponsor_segments(url)
-        elif "vk" in url:
+        elif vk_video_regex.match(url):
             preview_url, title = get_information_vk(url)
             author_name = "ВКонтакте"
             sponsorblock_segments = []
@@ -40,7 +45,7 @@ async def get_video_information(url: str) -> InformationResponse:
             title="Ролик недоступен",
             sponsor_segments=[],
         )
-    except (KeyError, Exception):
+    except (KeyError, IndexError):
         return InformationResponse(
             preview_url="Ошибка получения информации",
             author_name="Ошибка получения информации",
