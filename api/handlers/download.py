@@ -57,9 +57,11 @@ async def get_video(
     except (YoutubeDLError, Exception):
         raise DownloadErrorException
     else:
-        response = StreamingResponse(
-            iterfile(file_path), media_type="application/octet-stream"
-        )
+        if video.only_audio is True:
+            media_type = "audio/m4a"
+        else:
+            media_type = "video/webm"
+        response = StreamingResponse(iterfile(file_path), media_type=media_type)
         response.headers["Content-Disposition"] = f'attachment; filename="{file_name}"'
         if user:
             await VideoRepository.add(
