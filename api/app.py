@@ -1,22 +1,22 @@
 from typing import AsyncIterator
+
+import sentry_sdk
 from fastapi import FastAPI
 from fastapi.concurrency import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
-from sqladmin import Admin
-import sentry_sdk
-
 from redis import asyncio as aioredis
+from sqladmin import Admin
 
+from api.admin.auth import authentication_backend
 from api.admin.views import UserAdmin, VideosAdmin
-from common.settings import settings
-
-from api.handlers.download import router as download_router
-from api.handlers.information import router as information_router
 from api.handlers.auth import router as auth_router
 from api.handlers.authorized import router as history_router
-from api.admin.auth import authentication_backend
+from api.handlers.download import router as download_router
+from api.handlers.help import router as help_router
+from api.handlers.information import router as information_router
+from common.settings import settings
 from database.database import engine
 
 
@@ -37,6 +37,7 @@ def create_app():
     app = FastAPI(title=settings.title, debug=settings.debug, lifespan=lifespan)
     app.include_router(download_router)
     app.include_router(information_router)
+    app.include_router(help_router)
     app.include_router(history_router)
     app.include_router(auth_router)
     app.add_middleware(

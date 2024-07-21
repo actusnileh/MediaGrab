@@ -4,10 +4,8 @@ from jose import jwt
 from passlib.context import CryptContext
 from pydantic import EmailStr
 
-from common.exceptions import (
-    IncorrectTokenFormatExpressionException,
-    TokenAbsentException,
-)
+from common.exceptions import (IncorrectTokenFormatExpressionException,
+                               TokenAbsentException)
 from common.settings import settings
 from database.users.repository import UserRepository
 

@@ -1,7 +1,8 @@
 from sqlalchemy import desc, select
+
+from database.database import async_session_maker
 from database.repository import BaseRepository
 from database.videos.models import Videos
-from database.database import async_session_maker
 
 
 class VideoRepository(BaseRepository):

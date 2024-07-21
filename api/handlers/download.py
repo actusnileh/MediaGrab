@@ -1,12 +1,12 @@
-from datetime import datetime
 import os
+from datetime import datetime
 from typing import Optional
 
 import aiofiles
 from fastapi import Depends
 from fastapi.responses import StreamingResponse
 from fastapi.routing import APIRouter
-from yt_dlp.utils import YoutubeDLError, ExtractorError
+from yt_dlp.utils import ExtractorError, YoutubeDLError
 
 from api.handlers.dependencies import get_current_user_optional
 from api.schemas.download_schema import VideoSchema
@@ -39,7 +39,7 @@ async def iterfile(file_path):
     - `highest` - 1080p
 
     Примечания:
-    - Параметр `only_audio` позволяет загрузить только аудиодорожку в формате MP3.
+    - Параметр `only_audio` позволяет загрузить только аудиодорожку.
     - Параметр `sponsorblock` позволяет удалить из видеоролика YouTube рекламные интеграции.
 
     - Если пользователь авторизован, то видеоролик попадёт в историю его запросов.

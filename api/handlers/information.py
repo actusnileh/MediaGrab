@@ -1,4 +1,5 @@
 import re
+
 from fastapi.routing import APIRouter
 from fastapi_cache.decorator import cache
 from pytube.exceptions import VideoUnavailable
@@ -9,6 +10,11 @@ from services.information import get_information_vk, get_information_youtube
 from services.sponsorblock import get_sponsor_segments
 
 router = APIRouter(tags=["Information"], prefix="/information")
+
+youtube_regex = re.compile(
+    r"^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$"
+)
+vk_video_regex = re.compile(r"^(?:https?:\/\/)?(?:www\.)?vk\.com\/video-\d+_\d+$")
 
 
 @router.get(
@@ -24,10 +30,6 @@ router = APIRouter(tags=["Information"], prefix="/information")
 )
 @cache(expire=60)
 async def get_video_information(url: str) -> InformationResponse:
-    youtube_regex = re.compile(
-        r"^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})$"
-    )
-    vk_video_regex = re.compile(r"^(?:https?:\/\/)?(?:www\.)?vk\.com\/video-\d+_\d+$")
     try:
         if youtube_regex.match(url):
             preview_url, author_name, title = get_information_youtube(url)

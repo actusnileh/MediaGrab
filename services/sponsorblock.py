@@ -1,5 +1,6 @@
+from time import gmtime, strftime
+
 import requests
-from time import strftime, gmtime
 
 
 def get_sponsor_segments(url) -> list[str]:
