@@ -5,7 +5,7 @@ services:
     depends_on:
       - fastapi
     ports:
-      - "8000:443"
+      - "443:443"
     volumes:
       - ./conf.d:/etc/nginx/conf.d
       - ./letsencrypt:/etc/letsencrypt
