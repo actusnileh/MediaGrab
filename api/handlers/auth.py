@@ -50,8 +50,8 @@ async def login_user(response: Response, user_data: UserAuth):
     if not user:
         raise IncorrectEmailOrPasswordsException
     access_token, refresh_token = create_access_token({"sub": str(user.id)})
-    response.set_cookie("multigrab_user_token", access_token, httponly=True)
-    response.set_cookie("multigrab_refresh_token", refresh_token, httponly=True)
+    response.set_cookie("user_token", access_token, httponly=True)
+    response.set_cookie("refresh_token", refresh_token, httponly=True)
     return {
         "user_id": user.id,
         "access_token": access_token,
@@ -65,6 +65,6 @@ async def login_user(response: Response, user_data: UserAuth):
     description="Выходит из текущей учетной записи пользователя, удаляя токен авторизации.",
 )
 async def logout_user(response: Response) -> Dict:
-    response.delete_cookie("multigrab_user_token")
-    response.delete_cookie("multigrab_refresh_token")
+    response.delete_cookie("user_token")
+    response.delete_cookie("refresh_token")
     return {"detail": "Успешно"}

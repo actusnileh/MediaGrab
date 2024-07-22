@@ -1,13 +1,24 @@
 services:
+  nginx:
+    container_name: mediagrab-nginx
+    image: nginx:alpine
+    depends_on:
+      - fastapi
+    ports:
+      - "8000:443"
+    volumes:
+      - ./conf.d:/etc/nginx/conf.d
+      - ./ssl:/etc/nginx/ssl
+    networks:
+      - backend
+
   fastapi:
-    container_name: multigrab-fastapi
+    container_name: mediagrab-fastapi
     build: ..
     command: /bin/sh -c "alembic upgrade head && uvicorn --factory api.app:create_app --reload --host 0.0.0.0 --port 8000"
-    ports:
-      - "8000:8000"
     depends_on:
       - redis
-      - db
+      - postgres
     volumes:
       - ..:/code
       - ../videos:/app/videos
@@ -15,7 +26,7 @@ services:
       - backend
 
   celery:
-    container_name: multigrab-celery
+    container_name: mediagrab-celery
     build: ..
     command: celery -A services.tasks.celery:celery worker --loglevel=info
     volumes:

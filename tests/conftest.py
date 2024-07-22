@@ -63,8 +63,8 @@ async def authenticated_ac():
                 "password": "string",
             },
         )
-        assert ac.cookies["multigrab_user_token"]
-        assert ac.cookies["multigrab_refresh_token"]
+        assert ac.cookies["user_token"]
+        assert ac.cookies["refresh_token"]
         yield ac
 
 

@@ -1,7 +1,7 @@
 services:
-  db:
+  postgres:
     image: postgres
-    container_name: multigrab-postgres
+    container_name: mediagrab-postgres
 
     environment:
       POSTGRES_USER: ${DB_USER}
@@ -17,7 +17,7 @@ services:
 
   redis:
     image: redis:latest
-    container_name: multigrab-redis
+    container_name: mediagrab-redis
     ports:
       - "6379:6379"
     volumes:

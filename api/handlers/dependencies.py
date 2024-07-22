@@ -15,8 +15,8 @@ from database.users.repository import UserRepository
 
 
 def get_tokens(request: Request):
-    user_token = request.cookies.get("multigrab_user_token")
-    refresh_token = request.cookies.get("multigrab_refresh_token")
+    user_token = request.cookies.get("user_token")
+    refresh_token = request.cookies.get("refresh_token")
     if not user_token:
         return None
     return user_token, refresh_token
@@ -36,7 +36,7 @@ async def get_current_user(
             new_access_token = await refresh_access_token(refresh_token)
             if response:
                 response.set_cookie(
-                    "multigrab_user_token", new_access_token, httponly=True
+                    "user_token", new_access_token, httponly=True
                 )
             return await get_current_user(response, (new_access_token, refresh_token))
         except JWTError:
@@ -65,7 +65,7 @@ async def get_current_user_optional(
     except JWTError:
         try:
             new_access_token = await refresh_access_token(refresh_token)
-            response.set_cookie("multigrab_user_token", new_access_token, httponly=True)
+            response.set_cookie("user_token", new_access_token, httponly=True)
             return await get_current_user(response, (new_access_token, refresh_token))
         except JWTError:
             raise TokenExpiredException

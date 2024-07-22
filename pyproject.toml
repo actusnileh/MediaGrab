@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "multigrab"
+name = "mediagrab"
 version = "0.1.0"
 description = ""
 authors = ["Actus Nileh <actusnileh@gmail.com>"]
