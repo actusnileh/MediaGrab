@@ -2,6 +2,7 @@ import pathlib
 from typing import Literal
 
 import environ
+from pydantic import Field
 from pydantic_settings import BaseSettings
 
 BASE_DIR = pathlib.Path(__file__).parent.parent
@@ -10,10 +11,11 @@ environ.Env.read_env(str(BASE_DIR.joinpath(".env")))
 
 
 class Settings(BaseSettings):
-    mode: Literal["DEV", "TEST", "PROD"] = env("MODE")
+    mode: Literal["DEV", "TEST", "PROD"] = Field(env("MODE"))
+    debug: bool = Field(default=False)
+
     sentry_key: str = env("SENTRY_KEY")
 
-    debug: bool = env("DEBUG", default=False)
     title: str = env("TITLE")
     vk_token: str = env("VK_TOKEN")
 
@@ -36,6 +38,13 @@ class Settings(BaseSettings):
     algorithm: str = env("ALGORITHM")
     user_token_expire: int = env("USER_TOKEN_EXPIRE")
     refresh_token_expire: int = env("REFRESH_TOKEN_EXPIRE")
+
+    def __init__(self, **values):
+        super().__init__(**values)
+        if self.mode == "PROD":
+            self.debug = False
+        else:
+            self.debug = True
 
 
 settings = Settings()

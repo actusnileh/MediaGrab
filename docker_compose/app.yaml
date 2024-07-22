@@ -6,9 +6,13 @@ services:
       - fastapi
     ports:
       - "443:443"
+      - "80:80"
     volumes:
       - ./conf.d:/etc/nginx/conf.d
       - ./letsencrypt:/etc/letsencrypt
+    environment:
+      - MODE
+    entrypoint: /bin/sh -c "if [ $$MODE = 'PROD' ]; then cp /etc/nginx/conf.d/prod/nginx.conf /etc/nginx/conf.d/nginx.conf; else cp /etc/nginx/conf.d/dev/nginx.conf /etc/nginx/conf.d/nginx.conf; fi && nginx -g 'daemon off;'"
     networks:
       - backend
 
