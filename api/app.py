@@ -14,6 +14,7 @@ from api.admin.views import UserAdmin, VideosAdmin
 from api.handlers.auth import router as auth_router
 from api.handlers.authorized import router as history_router
 from api.handlers.download import router as download_router
+from api.handlers.root import router as root_router
 from api.handlers.help import router as help_router
 from api.handlers.information import router as information_router
 from common.settings import settings
@@ -35,6 +36,7 @@ def create_app():
     )
 
     app = FastAPI(title=settings.title, debug=settings.debug, lifespan=lifespan)
+    app.include_router(root_router)
     app.include_router(download_router)
     app.include_router(information_router)
     app.include_router(help_router)
