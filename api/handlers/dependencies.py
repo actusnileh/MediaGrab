@@ -6,7 +6,6 @@ from jose import JWTError, jwt
 
 from common.exceptions import (
     IncorrectTokenFormatExpressionException,
-    TokenAbsentException,
     TokenExpiredException,
 )
 from common.settings import settings
@@ -26,8 +25,6 @@ async def get_current_user(
     response: Response = None,
     tokens: tuple = Depends(get_tokens),
 ):
-    if tokens is None:
-        raise TokenAbsentException
     user_token, refresh_token = tokens
     try:
         payload = jwt.decode(user_token, settings.secret_key, settings.algorithm)
@@ -35,9 +32,7 @@ async def get_current_user(
         try:
             new_access_token = await refresh_access_token(refresh_token)
             if response:
-                response.set_cookie(
-                    "user_token", new_access_token, httponly=True
-                )
+                response.set_cookie("user_token", new_access_token, httponly=True)
             return await get_current_user(response, (new_access_token, refresh_token))
         except JWTError:
             raise TokenExpiredException
