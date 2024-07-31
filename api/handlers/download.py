@@ -72,5 +72,5 @@ async def get_video(
                 url=video.url,
                 download_at=datetime.now(),
             )
-        clear_video_cache.apply_async(args=[file_name], countdown=300)
+        clear_video_cache.apply_async(args=[file_name], countdown=30)
         return response

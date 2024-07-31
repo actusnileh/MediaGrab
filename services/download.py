@@ -22,7 +22,7 @@ async def download_video(video_data: VideoSchema) -> str:
                 }
             ]
         else:
-            format_option = f"bestvideo[height<={quality_value}]+bestaudio"
+            format_option = f"bestvideo[height<={quality_value}]+bestaudio/best"
             postprocessors = []
 
         ydl_opts = {
