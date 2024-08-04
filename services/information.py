@@ -6,10 +6,7 @@ from common.settings import settings
 
 def get_information_youtube(url):
     yt = YouTube(url)
-    thumbnail_url = yt.thumbnail_url
-    author = yt.author
-    title = yt.title
-    return thumbnail_url, author, title
+    return yt.thumbnail_url, yt.author, yt.title, yt.length
 
 
 def get_information_vk(url):
@@ -23,6 +20,7 @@ def get_information_vk(url):
         video_info = data["response"]["items"][0]
         preview_url = video_info["image"][-1]["url"]
         title = video_info["title"]
-        return preview_url, title
+        length = video_info["duration"]
+        return preview_url, title, length
     else:
         return None
