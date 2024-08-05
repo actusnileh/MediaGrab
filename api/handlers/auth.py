@@ -22,7 +22,8 @@ router = APIRouter(tags=["Authentication"], prefix="/auth")
 @router.post(
     "/register",
     summary="Регистрация нового пользователя",
-    description="Создает новую учетную запись пользователя. Требуется указать имя пользователя (никнейм), электронную почту и пароль.",
+    description="Создает новую учетную запись пользователя.\
+Требуется указать имя пользователя (никнейм), электронную почту и пароль.",
 )
 async def register_user(user_data: UserRegister) -> Dict:
     existing_user = await UserRepository.find_one_or_none(email=user_data.email)
@@ -43,7 +44,8 @@ async def register_user(user_data: UserRegister) -> Dict:
 @router.post(
     "/login",
     summary="Авторизация пользователя",
-    description="Авторизует пользователя, проверяя его почту и пароль. Возвращает идентификатор пользователя и токен доступа.",
+    description="Авторизует пользователя, проверяя его почту и пароль.\
+Возвращает идентификатор пользователя и токен доступа.",
 )
 async def login_user(response: Response, user_data: UserAuth):
     user = await authenticate_user(user_data.email, user_data.password)

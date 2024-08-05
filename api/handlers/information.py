@@ -11,10 +11,12 @@ from services.sponsorblock import get_sponsor_segments
 
 router = APIRouter(tags=["Information"], prefix="/information")
 
-youtube_regex = re.compile(
-    r"^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$"
-)
-vk_video_regex = re.compile(r"^(?:https?:\/\/)?(?:www\.)?vk\.com\/video-\d+_\d+$")
+url_patterns = {
+    "youtube": re.compile(
+        r"^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$"
+    ),
+    "vk": re.compile(r"^(?:https?:\/\/)?(?:www\.)?vk\.com\/video-\d+_\d+$"),
+}
 
 
 @router.get(
@@ -32,36 +34,33 @@ vk_video_regex = re.compile(r"^(?:https?:\/\/)?(?:www\.)?vk\.com\/video-\d+_\d+$
 @cache(expire=60)
 async def get_video_information(url: str) -> InformationResponse:
     try:
-        if youtube_regex.match(url):
-            preview_url, author_name, title, length = get_information_youtube(url)
-            sponsorblock_segments: list = get_sponsor_segments(url)
-        elif vk_video_regex.match(url):
-            preview_url, title, length = get_information_vk(url)
-            author_name = "ВКонтакте"
-            sponsorblock_segments = []
+        data = {}
+        if url_patterns["youtube"].match(url):
+            data["preview_url"], data["author_name"], data["title"], data["length"] = (
+                get_information_youtube(url)
+            )
+            data["sponsor_segments"] = get_sponsor_segments(url)
+        elif url_patterns["vk"].match(url):
+            data["preview_url"], data["title"], data["length"] = get_information_vk(url)
+            data["author_name"] = "ВКонтакте"
+            data["sponsor_segments"] = []
         else:
             raise UrlFormatException
     except VideoUnavailable:
-        return InformationResponse(
-            preview_url="Ролик недоступен",
-            author_name="Ролик недоступен",
-            title="Ролик недоступен",
-            length="Ролик недоступен",
-            sponsor_segments=[],
-        )
+        data = {
+            "preview_url": "Ролик недоступен",
+            "author_name": "Ролик недоступен",
+            "title": "Ролик недоступен",
+            "length": "Ролик недоступен",
+            "sponsor_segments": [],
+        }
     except (KeyError, IndexError):
-        return InformationResponse(
-            preview_url="Ошибка получения информации",
-            author_name="Ошибка получения информации",
-            title="Ошибка получения информации",
-            length="Ошибка получения информации",
-            sponsor_segments=[],
-        )
-    else:
-        return InformationResponse(
-            preview_url=preview_url,
-            author_name=author_name,
-            title=title,
-            length=length,
-            sponsor_segments=sponsorblock_segments,
-        )
+        data = {
+            "preview_url": "Ошибка получения информации",
+            "author_name": "Ошибка получения информации",
+            "title": "Ошибка получения информации",
+            "length": "Ошибка получения информации",
+            "sponsor_segments": [],
+        }
+
+    return InformationResponse(**data)

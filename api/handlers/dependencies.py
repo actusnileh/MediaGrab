@@ -7,6 +7,7 @@ from jose import JWTError, jwt
 from common.exceptions import (
     IncorrectTokenFormatExpressionException,
     TokenExpiredException,
+    TokenAbsentException
 )
 from common.settings import settings
 from database.users.auth import refresh_access_token
@@ -25,6 +26,8 @@ async def get_current_user(
     response: Response = None,
     tokens: tuple = Depends(get_tokens),
 ):
+    if tokens is None:
+        return TokenAbsentException
     user_token, refresh_token = tokens
     try:
         payload = jwt.decode(user_token, settings.secret_key, settings.algorithm)

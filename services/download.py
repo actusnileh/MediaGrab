@@ -62,7 +62,6 @@ async def download_video(video_data: VideoSchema) -> str:
                     },
                 ]
             )
-
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(video_data.url, download=True)
             extension = info.get("ext", "webm")
@@ -70,6 +69,9 @@ async def download_video(video_data: VideoSchema) -> str:
 
         video_dir = "/app/videos"
         filepath = os.path.join(video_dir, file_name)
+
+        if video_data.cut:
+            pass
 
         return filepath, file_name
     except DownloadError as e:
