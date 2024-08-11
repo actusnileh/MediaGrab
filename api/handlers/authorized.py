@@ -75,7 +75,4 @@ async def remove_history(
 async def about_user(
     current_user: UserResponse = Depends(get_current_user),
 ) -> UserResponse:
-    user_response = UserResponse(
-        id=current_user.id, username=current_user.username, email=current_user.email
-    )
-    return user_response
+    return current_user
