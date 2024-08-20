@@ -19,10 +19,7 @@ services:
   fastapi:
     container_name: mediagrab-fastapi
     build: ..
-    command: /bin/sh -c "alembic upgrade head && uvicorn --factory api.app:create_app --reload --host 0.0.0.0 --port 8000"
-    depends_on:
-      - redis
-      - postgres
+    command: /bin/sh -c "alembic upgrade head && uvicorn --factory app.main:create_app --reload --host 0.0.0.0 --port 8000"
     volumes:
       - ..:/code
       - ../videos:/app/videos
@@ -32,7 +29,7 @@ services:
   celery:
     container_name: mediagrab-celery
     build: ..
-    command: celery -A services.tasks.celery:celery worker --loglevel=info
+    command: celery -A app.core.celery_config:celery worker --loglevel=info
     volumes:
       - ..:/code
       - ../videos:/app/videos

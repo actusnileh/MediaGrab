@@ -167,3 +167,4 @@ videos/*
 docker_compose/db_data
 docker_compose/db_data
 docker_compose/redis_data
+cookies.txt
