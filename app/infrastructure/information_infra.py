@@ -76,3 +76,20 @@ class VkInfra(VideoInfra):
 
     def get_sponsor_segments(self, url: str):
         return []
+
+
+class RuTubeInfra(VideoInfra):
+    def get_information(self, url: str):
+        video_id = url.split("/")[-2]
+        response = requests.get(f"https://rutube.ru/api/video/{video_id}")
+        data = response.json()
+
+        if response.status_code == 200:
+            preview_url = data["thumbnail_url"]
+            author = data["author"]["name"]
+            title = data["title"]
+            length = data["duration"]
+            return preview_url, author, title, length
+
+    def get_sponsor_segments(self, url: str):
+        return []

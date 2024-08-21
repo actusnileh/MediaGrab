@@ -5,6 +5,7 @@ from app.core.exceptions import (
     NotFoundError,
 )
 from app.infrastructure.information_infra import (
+    RuTubeInfra,
     VkInfra,
     YouTubeInfra,
 )
@@ -17,6 +18,7 @@ class InformationService:
         self.infras = {
             "youtube": YouTubeInfra(),
             "vk": VkInfra(),
+            "rutube": RuTubeInfra(),
         }
 
     def get_information(self, url: str):
@@ -47,5 +49,7 @@ class InformationService:
             return "youtube"
         elif "vk" in url:  # TODO: добавить regex
             return "vk"
+        elif "rutube" in url:  # TODO: добавить regex
+            return "rutube"
         else:
             return None

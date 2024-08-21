@@ -2,7 +2,7 @@
 
 <p align="center"><img src="https://socialify.git.ci/actusnileh/MultiGrab/image?font=Inter&language=1&logo=https%3A%2F%2Fi.ibb.co%2Fzmb0Sym%2F51454cdae7db.png&name=1&pattern=Signal&stargazers=1&theme=Auto" alt="project-image"></p>
 
-<p id="description">MediaGrab API — это универсальное решение для загрузки видеороликов и аудио с различных платформ таких как ВКонтакте и YouTube.</p>
+<p id="description">MediaGrab API — это универсальное решение для загрузки видеороликов и аудио с различных платформ таких как ВКонтакте, RuTube и YouTube.</p>
 
 <h2>🛠️ Установка:</h2>
 

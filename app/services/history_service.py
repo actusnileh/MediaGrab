@@ -1,5 +1,6 @@
 from app.core.exceptions import NotFoundError
 from app.infrastructure.information_infra import (
+    RuTubeInfra,
     VkInfra,
     YouTubeInfra,
 )
@@ -30,6 +31,10 @@ class HistoryService:
                 )
             elif VK_REGEX.match(video_history.url):
                 preview_url, _, title, _ = VkInfra().get_information(video_history.url)
+            elif "rutubes" in video_history.url:
+                preview_url, _, title, _ = RuTubeInfra().get_information(
+                    video_history.url,
+                )
             history_responses.append(
                 HistoryResponse(
                     id=video_history.id,

@@ -35,7 +35,7 @@ def create_app():
 
     app = FastAPI(
         title=configs.title,
-        version="1.0",
+        version="1.2",
         debug=configs.debug,
         lifespan=lifespan,
     )

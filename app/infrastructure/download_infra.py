@@ -72,6 +72,8 @@ class YtDLPDownloader:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(video.url, download=True)
             extension = info.get("ext", "webm")
+            if video.only_audio:
+                extension = "m4a"
             file_name = f"{video_uuid}.{extension}"
 
         filepath = os.path.join(YtDLPDownloader.video_dir, file_name)
