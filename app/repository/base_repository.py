@@ -1,4 +1,9 @@
-from sqlalchemy import and_, delete, insert, select
+from sqlalchemy import (
+    and_,
+    delete,
+    insert,
+    select,
+)
 
 from app.core.database import async_session_maker
 

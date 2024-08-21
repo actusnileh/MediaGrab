@@ -22,7 +22,7 @@ class YtDLPDownloader:
                 {
                     "key": "FFmpegExtractAudio",
                     "preferredcodec": "m4a",
-                }
+                },
             ]
         else:
             format_option = f"bestvideo[height<={quality_value}]+bestaudio/best"
@@ -53,9 +53,11 @@ class YtDLPDownloader:
                         "force_keyframes": False,
                         "remove_chapters_patterns": [],
                         "remove_ranges": [],
-                        "remove_sponsor_segments": set(
-                            ["sponsor", "selfpromo", "interaction"]
-                        ),
+                        "remove_sponsor_segments": {
+                            "sponsor",
+                            "selfpromo",
+                            "interaction",
+                        },
                         "sponsorblock_chapter_title": "[SponsorBlock]: %(category_names)l",
                     },
                     {
@@ -64,7 +66,7 @@ class YtDLPDownloader:
                         "add_infojson": None,
                         "add_metadata": False,
                     },
-                ]
+                ],
             )
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:

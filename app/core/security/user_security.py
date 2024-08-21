@@ -1,4 +1,7 @@
-from datetime import datetime, timedelta
+from datetime import (
+    datetime,
+    timedelta,
+)
 
 from jose import jwt
 from passlib.context import CryptContext
@@ -6,6 +9,7 @@ from passlib.context import CryptContext
 from app.core.config import configs
 from app.core.exceptions import AuthError
 from app.repository.user_repository import UserRepository
+
 
 pwd_context = CryptContext(
     schemes=["bcrypt"],
@@ -40,7 +44,9 @@ def create_access_token(data: dict) -> dict:
 
 async def refresh_access_token(refresh_token: str) -> str:
     decoded_token = jwt.decode(
-        refresh_token, configs.secret_key, algorithms=[configs.algorithm]
+        refresh_token,
+        configs.secret_key,
+        algorithms=[configs.algorithm],
     )
     user_id = decoded_token.get("sub")
     if not user_id:
@@ -54,7 +60,9 @@ async def refresh_access_token(refresh_token: str) -> str:
     expire = datetime.now() + timedelta(minutes=configs.user_token_expire)
     access_token_data.update({"exp": expire})
     new_access_token = jwt.encode(
-        access_token_data, configs.secret_key, configs.algorithm
+        access_token_data,
+        configs.secret_key,
+        configs.algorithm,
     )
 
     return new_access_token

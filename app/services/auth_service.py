@@ -5,7 +5,11 @@ from app.core.security.user_security import (
     verify_password,
 )
 from app.repository.user_repository import UserRepository
-from app.schema.auth_schema import SignIn, SignInResponse, SignUp
+from app.schema.auth_schema import (
+    SignIn,
+    SignInResponse,
+    SignUp,
+)
 
 
 class AuthService:
@@ -14,7 +18,7 @@ class AuthService:
 
     async def sign_up(self, sign_up_info: SignUp):
         existing_user = await self.user_repository.find_one_or_none(
-            email=sign_up_info.email
+            email=sign_up_info.email,
         )
 
         if existing_user:
@@ -33,10 +37,10 @@ class AuthService:
         user = await self.user_repository.find_one_or_none(email=sign_in_info.email)
 
         if not user or not verify_password(sign_in_info.password, user.hashed_password):
-            return None
+            raise AuthError(detail="Incorrect email or password")
 
         if not user:
-            raise AuthError(detail="Incorrect email or password")
+            raise AuthError(detail="Account does not exist")
 
         access_token, refresh_token = create_access_token({"sub": str(user.id)})
 

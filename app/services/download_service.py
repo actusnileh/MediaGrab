@@ -15,11 +15,13 @@ class DownloadService:
         self.video_downloader = video_downloader
 
     async def download_video(
-        self, video: VideoSchema, user: Optional[Users]
+        self,
+        video: VideoSchema,
+        user: Optional[Users],
     ) -> tuple[str, str]:
         try:
             file_path, file_name = await self.video_downloader.download_video(
-                video=video
+                video=video,
             )
         except Exception:
             raise InternalError("Error downloading video")

@@ -1,8 +1,16 @@
 from datetime import datetime
 from typing import Optional
 
-from fastapi import Depends, Request, Response
-from jose import JWTError, jwt
+from fastapi import (
+    Depends,
+    Request,
+    Response,
+)
+
+from jose import (
+    jwt,
+    JWTError,
+)
 
 from app.core.config import configs
 from app.core.exceptions import AuthError

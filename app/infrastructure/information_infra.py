@@ -1,5 +1,8 @@
 import re
-from abc import ABC, abstractmethod
+from abc import (
+    ABC,
+    abstractmethod,
+)
 
 import isodate
 import requests
@@ -28,7 +31,8 @@ class YouTubeInfra(VideoInfra):
             "key": configs.youtube_token,
         }
         response = requests.get(
-            "https://www.googleapis.com/youtube/v3/videos", params=params
+            "https://www.googleapis.com/youtube/v3/videos",
+            params=params,
         )
         response.raise_for_status()
 

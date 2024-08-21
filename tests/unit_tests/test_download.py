@@ -1,4 +1,8 @@
-from api.schemas.download_schema import QualityEnum, VideoSchema
+from api.schemas.download_schema import (
+    QualityEnum,
+    VideoSchema,
+)
+
 from services.download import download_video
 
 

@@ -1,8 +1,10 @@
 from fastapi.routing import APIRouter
+
 from fastapi_cache.decorator import cache
 
 from app.schema.help_schema import HelpResponse
 from app.services.help_service import HelpService
+
 
 router = APIRouter(tags=["Help"], prefix="/help")
 

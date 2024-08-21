@@ -1,8 +1,13 @@
-from fastapi import APIRouter, Query
+from fastapi import (
+    APIRouter,
+    Query,
+)
+
 from fastapi_cache.decorator import cache
 
 from app.schema.information_schema import InformationResponse
 from app.services.information_service import InformationService
+
 
 router = APIRouter(tags=["Information"], prefix="/information")
 

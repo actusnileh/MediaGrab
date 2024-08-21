@@ -6,6 +6,7 @@ from app.api.v1.endpoints.help import router as help_router
 from app.api.v1.endpoints.history import router as history_router
 from app.api.v1.endpoints.information import router as information_router
 
+
 routers = APIRouter()
 router_list = [
     auth_router,

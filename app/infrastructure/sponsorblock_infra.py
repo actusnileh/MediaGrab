@@ -1,4 +1,7 @@
-from time import gmtime, strftime
+from time import (
+    gmtime,
+    strftime,
+)
 
 import requests
 
@@ -8,7 +11,7 @@ class SponsorSegmentsInfra:
         video_id = self.extract_video_id(url)
 
         response = requests.get(
-            f"https://sponsor.ajay.app/api/skipSegments?videoID={video_id}"
+            f"https://sponsor.ajay.app/api/skipSegments?videoID={video_id}",
         )
 
         sponsor_segments = []

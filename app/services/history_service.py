@@ -1,9 +1,15 @@
 from app.core.exceptions import NotFoundError
-from app.infrastructure.information_infra import VkInfra, YouTubeInfra
+from app.infrastructure.information_infra import (
+    VkInfra,
+    YouTubeInfra,
+)
 from app.model.users import Users
 from app.repository.video_repository import VideoRepository
 from app.schema.history_schema import HistoryResponse
-from app.utils.url_patterns import VK_REGEX, YOUTUBE_REGEX
+from app.utils.url_patterns import (
+    VK_REGEX,
+    YOUTUBE_REGEX,
+)
 
 
 class HistoryService:
@@ -20,7 +26,7 @@ class HistoryService:
         for video_history in video_history_list:
             if YOUTUBE_REGEX.match(video_history.url):
                 preview_url, _, title, _ = YouTubeInfra().get_information(
-                    url=video_history.url
+                    url=video_history.url,
                 )
             elif VK_REGEX.match(video_history.url):
                 preview_url, _, title, _ = VkInfra().get_information(video_history.url)
@@ -31,7 +37,7 @@ class HistoryService:
                     preview_url=preview_url,
                     title=title,
                     download_at=video_history.download_at.isoformat(),
-                )
+                ),
             )
         return history_responses
 

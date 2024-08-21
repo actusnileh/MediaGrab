@@ -23,12 +23,48 @@ sqladmin = "^0.18.0"
 itsdangerous = "^2.2.0"
 pytest-asyncio = "^0.23.7"
 httpx = "^0.27.0"
-isort = "^5.13.2"
 sentry-sdk = {extras = ["fastapi"], version = "^2.9.0"}
 aiofiles = "^24.1.0"
 isodate = "^0.6.1"
 
 
+[tool.poetry.group.dev.dependencies]
+isort = "^5.13.2"
+pre-commit = "^3.8.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+multi_line_output=3
+include_trailing_comma=true
+line_length=120
+lines_after_imports=2
+lines_between_sections=1
+lines_between_types=0
+force_alphabetical_sort_within_sections=true
+ensure_newline_before_comments=true
+combine_as_imports=true
+combine_star=true
+skip_gitignore=true
+balanced_wrapping=true
+force_grid_wrap=2
+src_paths=["app", "tests"]
+skip_glob=[
+    ".git",
+    ".idea",
+    ".vscode",
+    "venv",
+    ".venv",
+]
+known_fastapi=["fastapi"]
+known_first_party=["app"]
+sections=[
+    "FUTURE",
+    "STDLIB",
+    "FASTAPI",
+    "THIRDPARTY",
+    "FIRSTPARTY",
+    "LOCALFOLDER",
+]

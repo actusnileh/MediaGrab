@@ -1,9 +1,10 @@
 from typing import AsyncIterator
 
-import sentry_sdk
 from fastapi import FastAPI
 from fastapi.concurrency import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
+
+import sentry_sdk
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from redis import asyncio as aioredis

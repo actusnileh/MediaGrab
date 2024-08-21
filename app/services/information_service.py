@@ -1,7 +1,13 @@
 from typing import Union
 
-from app.core.exceptions import InternalError, NotFoundError
-from app.infrastructure.information_infra import VkInfra, YouTubeInfra
+from app.core.exceptions import (
+    InternalError,
+    NotFoundError,
+)
+from app.infrastructure.information_infra import (
+    VkInfra,
+    YouTubeInfra,
+)
 from app.schema.information_schema import InformationResponse
 from app.utils.url_patterns import YOUTUBE_REGEX
 
@@ -25,7 +31,7 @@ class InformationService:
             sponsor_segments = infra.get_sponsor_segments(url)
         except Exception:
             raise InternalError(
-                f"Error retrieving information from service '{platform}'"
+                f"Error retrieving information from service '{platform}'",
             )
 
         return InformationResponse(

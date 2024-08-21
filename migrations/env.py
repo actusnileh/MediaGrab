@@ -4,8 +4,8 @@ from alembic import context
 from sqlalchemy import engine_from_config, pool
 
 from app.core.database import DATABASE_URL, Base
-from app.model.users import Users
-from app.model.videos import Videos
+from app.model.users import Users  # noqa
+from app.model.videos import Videos  # noqa
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

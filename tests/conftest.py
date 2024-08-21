@@ -4,10 +4,17 @@ from datetime import datetime
 import pytest
 from api.app import create_app
 from common.settings import settings
-from database.database import Base, async_session_maker, engine
+from database.database import (
+    async_session_maker,
+    Base,
+    engine,
+)
 from database.users.models import Users
 from database.videos.models import Videos
-from httpx import ASGITransport, AsyncClient
+from httpx import (
+    ASGITransport,
+    AsyncClient,
+)
 from sqlalchemy import insert
 
 
@@ -45,7 +52,8 @@ async def prepare_database():
 @pytest.fixture(scope="function")
 async def ac():
     async with AsyncClient(
-        transport=ASGITransport(app=create_app()), base_url="http://test"
+        transport=ASGITransport(app=create_app()),
+        base_url="http://test",
     ) as ac:
         yield ac
 
@@ -53,7 +61,8 @@ async def ac():
 @pytest.fixture(scope="session")
 async def authenticated_ac():
     async with AsyncClient(
-        transport=ASGITransport(app=create_app()), base_url="http://test"
+        transport=ASGITransport(app=create_app()),
+        base_url="http://test",
     ) as ac:
         await ac.post(
             "/auth/login",
