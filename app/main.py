@@ -9,14 +9,13 @@ from fastapi_cache.backends.redis import RedisBackend
 from redis import asyncio as aioredis
 from sqladmin import Admin
 
-from app.api.v1.endpoints.admin.views import UserAdmin, VideosAdmin
-from app.api.v1.endpoints.admin.auth import authentication_backend
-from app.core.config import configs
-
 from app.api.v1.routes import routers as v1_routers
 from app.api.v2.routes import routers as v2_routers
-
+from app.core.config import configs
 from app.core.database import engine
+from app.core.security.admin_security import authentication_backend
+from app.infrastructure.admin.user_admin import UserAdmin
+from app.infrastructure.admin.videos_admin import VideosAdmin
 
 
 @asynccontextmanager

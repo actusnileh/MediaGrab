@@ -7,7 +7,6 @@ from app.repository.video_repository import VideoRepository
 from app.schema.history_schema import HistoryResponse
 from app.services.history_service import HistoryService
 
-
 router = APIRouter(tags=["History"], prefix="/history")
 
 
@@ -22,7 +21,9 @@ async def get_history(
     page_size: int = Query(6, description="Размер страницы"),
     current_user: Users = Depends(get_current_user),
 ):
-    return await HistoryService(video_repo=VideoRepository).get_history(page, page_size, current_user)
+    return await HistoryService(video_repo=VideoRepository).get_history(
+        page, page_size, current_user
+    )
 
 
 @router.post(
@@ -33,4 +34,6 @@ async def remove_history(
     video_id: int = Query(ge=1, description="Номер видеоролика"),
     current_user: Users = Depends(get_current_user),
 ):
-    return await HistoryService(video_repo=VideoRepository).remove_history(video_id, current_user)
+    return await HistoryService(video_repo=VideoRepository).remove_history(
+        video_id, current_user
+    )

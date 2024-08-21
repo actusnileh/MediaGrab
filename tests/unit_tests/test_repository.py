@@ -1,5 +1,4 @@
 import pytest
-
 from database.users.repository import UserRepository
 from database.videos.repository import VideoRepository
 

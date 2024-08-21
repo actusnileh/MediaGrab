@@ -2,14 +2,13 @@ import json
 from datetime import datetime
 
 import pytest
-from httpx import ASGITransport, AsyncClient
-from sqlalchemy import insert
-
 from api.app import create_app
 from common.settings import settings
 from database.database import Base, async_session_maker, engine
 from database.users.models import Users
 from database.videos.models import Videos
+from httpx import ASGITransport, AsyncClient
+from sqlalchemy import insert
 
 
 @pytest.fixture(scope="session", autouse=True)

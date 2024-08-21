@@ -4,7 +4,6 @@ from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
 from app.core.config import configs
 
-
 if configs.mode == "TEST":
     DATABASE_URL = f"postgresql+asyncpg://{configs.test_db_username}:{configs.test_db_password}@{configs.test_db_host}:{configs.test_db_port}/{configs.test_db_name}"
     DATABASE_PARAMS = {"poolclass": NullPool}

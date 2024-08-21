@@ -7,7 +7,6 @@ from app.core.config import configs
 from app.core.exceptions import AuthError
 from app.repository.user_repository import UserRepository
 
-
 pwd_context = CryptContext(
     schemes=["bcrypt"],
     deprecated="auto",

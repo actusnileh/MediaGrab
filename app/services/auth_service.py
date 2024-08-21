@@ -1,5 +1,9 @@
 from app.core.exceptions import AuthError
-from app.core.security import create_access_token, get_password_hash, verify_password
+from app.core.security.user_security import (
+    create_access_token,
+    get_password_hash,
+    verify_password,
+)
 from app.repository.user_repository import UserRepository
 from app.schema.auth_schema import SignIn, SignInResponse, SignUp
 

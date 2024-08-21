@@ -6,7 +6,7 @@ from jose import JWTError, jwt
 
 from app.core.config import configs
 from app.core.exceptions import AuthError
-from app.core.security import refresh_access_token
+from app.core.security.user_security import refresh_access_token
 from app.repository.user_repository import UserRepository
 
 
