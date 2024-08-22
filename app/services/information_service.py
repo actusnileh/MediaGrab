@@ -10,11 +10,7 @@ from app.infrastructure.information_infra import (
     YouTubeInfra,
 )
 from app.schema.information_schema import InformationResponse
-from app.utils.url_patterns import (
-    RUTUBE_REGEX,
-    VK_REGEX,
-    YOUTUBE_REGEX,
-)
+from app.utils.url_patterns import URL_PATTERNS
 
 
 class InformationService:
@@ -30,7 +26,7 @@ class InformationService:
         infra = self.infras.get(platform)
 
         if not infra:
-            raise NotFoundError(detail=f"Url '{url}' not supported")
+            raise NotFoundError(detail="Url not supported")
 
         try:
             preview_url, author, title, length = infra.get_information(url)
@@ -49,11 +45,11 @@ class InformationService:
         )
 
     def determine_platform(self, url: str) -> Union[str, None]:
-        if YOUTUBE_REGEX.match(url):
+        if URL_PATTERNS["YouTube"].match(url):
             return "youtube"
-        elif VK_REGEX.match(url) in url:
+        elif URL_PATTERNS["VK"].match(url):
             return "vk"
-        elif RUTUBE_REGEX.match(url):
+        elif URL_PATTERNS["RuTube"].match(url):
             return "rutube"
         else:
             return None
