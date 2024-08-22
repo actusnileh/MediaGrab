@@ -8,6 +8,7 @@ from app.model.users import Users
 from app.repository.video_repository import VideoRepository
 from app.schema.history_schema import HistoryResponse
 from app.utils.url_patterns import (
+    RUTUBE_REGEX,
     VK_REGEX,
     YOUTUBE_REGEX,
 )
@@ -31,7 +32,7 @@ class HistoryService:
                 )
             elif VK_REGEX.match(video_history.url):
                 preview_url, _, title, _ = VkInfra().get_information(video_history.url)
-            elif "rutubes" in video_history.url:
+            elif RUTUBE_REGEX.match(video_history.url):
                 preview_url, _, title, _ = RuTubeInfra().get_information(
                     video_history.url,
                 )

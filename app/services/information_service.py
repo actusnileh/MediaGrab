@@ -10,7 +10,11 @@ from app.infrastructure.information_infra import (
     YouTubeInfra,
 )
 from app.schema.information_schema import InformationResponse
-from app.utils.url_patterns import YOUTUBE_REGEX
+from app.utils.url_patterns import (
+    RUTUBE_REGEX,
+    VK_REGEX,
+    YOUTUBE_REGEX,
+)
 
 
 class InformationService:
@@ -47,9 +51,9 @@ class InformationService:
     def determine_platform(self, url: str) -> Union[str, None]:
         if YOUTUBE_REGEX.match(url):
             return "youtube"
-        elif "vk" in url:  # TODO: добавить regex
+        elif VK_REGEX.match(url) in url:
             return "vk"
-        elif "rutube" in url:  # TODO: добавить regex
+        elif RUTUBE_REGEX.match(url):
             return "rutube"
         else:
             return None
