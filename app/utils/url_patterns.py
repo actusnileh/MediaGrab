@@ -24,4 +24,12 @@ URL_PATTERNS = {
         r"[a-zA-Z0-9]+\/?"
         r"(?:\?.*)?$",
     ),
+    "Kinopoisk": re.compile(
+        r"^(?:https?:\/\/)?"
+        r"(?:www\.)?"
+        r"kinopoisk\.ru\/"
+        r"film\/"
+        r"\d+\/?"
+        r"(?:\?.*)?$",
+    ),
 }

@@ -20,6 +20,7 @@ class Configs(BaseSettings):
     # tokens
     youtube_token: str = env("YOUTUBE_TOKEN")
     vk_token: str = env("VK_TOKEN")
+    kinopoisk_token: str = env("KINOPOISK_TOKEN")
     sentry_token: str = env("SENTRY_TOKEN")
 
     # db

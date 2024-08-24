@@ -93,3 +93,26 @@ class RuTubeInfra(VideoInfra):
 
     def get_sponsor_segments(self, url: str):
         return []
+
+
+class KinopoiskInfra(VideoInfra):
+    def get_information(self, url: str):
+        video_id = url.split("/")[-2]
+        response = requests.get(
+            f"https://kinopoiskapiunofficial.tech/api/v2.2/films/{video_id}",
+            headers={
+                "accept": "application/json",
+                "X-API-KEY": configs.kinopoisk_token,
+            },
+        )
+        data = response.json()
+        print(data)
+        if response.status_code == 200:
+            preview_url = data["posterUrlPreview"]
+            author = "Кинопоиск"
+            title = data["nameRu"]
+            length = data["filmLength"] * 60
+            return preview_url, author, title, length
+
+    def get_sponsor_segments(self, url: str):
+        return []
