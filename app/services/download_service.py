@@ -42,5 +42,5 @@ class DownloadService:
                 clear_video_cache.apply_async(args=[file_name], countdown=30)
 
                 return file_path, file_name
-            else:
-                raise NotFoundError(detail="Url not supported")
+
+        raise NotFoundError(detail="Url not supported")
